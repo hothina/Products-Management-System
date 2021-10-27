@@ -1,5 +1,7 @@
 package model;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.io.Serializable;
 
 public class Account implements Serializable {
@@ -52,5 +54,6 @@ public class Account implements Serializable {
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
+
 
 }
