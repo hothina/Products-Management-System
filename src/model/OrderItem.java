@@ -8,5 +8,7 @@ public class OrderItem {
     private double price;
     private int quantity;
     private Date createdAt;
+public OrderItem() {}
+
 
 }

@@ -17,8 +17,8 @@ public enum Role {
         Role[] var1 = values();
         int var2 = var1.length;
 
-        for (int var3 = 0; var3 < var2; ++var3) {
-            Role c = var1[var3];
+        for (int i = 0; i < var2; ++i) {
+            Role c = var1[i];
             if (c.value.equals(value)) {
                 return c;
             }

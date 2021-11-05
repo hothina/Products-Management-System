@@ -15,8 +15,8 @@ public class UserServices implements IUserService {
     }
 
     @Override
-    public User getById(int id) throws Exception {
-        User user =userRepository.getById(id);
+    public User getById(long id) throws Exception {
+        User user = userRepository.getById(id);
         if (user != null)
             throw new Exception("user already exists");
         return user;
@@ -28,10 +28,10 @@ public class UserServices implements IUserService {
     }
 
     @Override
-    public void addUser(User user) throws Exception {
-//        if (userRepository.exist(newUser.getId()))
-//            throw new Exception("user already exists");
-//        userRepository.add(newUser);
+    public void addUser(User newUser) throws Exception {
+        if (userRepository.exist(newUser.getId()))
+            throw new Exception("user already exists");
+        userRepository.add(newUser);
 
     }
 

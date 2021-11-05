@@ -1,18 +1,26 @@
 package model;
 
 public class Drink {
-    private long id;
+    private int id;
     private String name;
     private int quantity;
-    private double price;
+    private int price;
 
     public Drink(){}
 
-    public Drink(int id, String name, int quantity, double price) {
+    public Drink(int id, String name, int quantity, int price) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
+    }
+
+    public Drink(String raw) {
+        String[] fileds = raw.split(",");
+        id = Integer.parseInt(fileds[0]);
+        name = fileds[1];
+        quantity = Integer.parseInt(fileds[2]);
+        price = Integer.parseInt(fileds[3]);
     }
 
     public long getId() {
@@ -43,7 +51,7 @@ public class Drink {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

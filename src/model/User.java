@@ -1,21 +1,23 @@
 package model;
 
 
+import utils.DateUtils;
+
+import java.util.Date;
+
 public class User {
 
     private long id;
     private String fullName;
-    private int birthDay;
+    private Date birthDay;
     private String phoneNumber;
     private String address;
     private UserStatus status;
     private Role role;
 
-    public User(){
 
-    }
 
-    public User(long id, String fullName, int birthDay, String phoneNumber, String address) {
+    public User(long id, String fullName, Date birthDay, String phoneNumber, String address) {
         this.id = id;
         this.fullName = fullName;
         this.birthDay = birthDay;
@@ -23,15 +25,17 @@ public class User {
         this.address = address;
     }
 
-    public User(long id, String fullName, int birthDay, String phoneNumber, String address, UserStatus status, Role role) {
+    public User(long id, String fullName, UserStatus status, Role role, Date birthDay, String phoneNumber, String address) {
         this.id = id;
         this.fullName = fullName;
-        this.birthDay = birthDay;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
         this.status = status;
         this.role = role;
+        this.birthDay = birthDay;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+
     }
+
 
     public long getId() {
         return id;
@@ -49,11 +53,11 @@ public class User {
         this.fullName = fullName;
     }
 
-    public int getBirthDay() {
+    public Date getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(int birthDay) {
+    public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
     }
 
@@ -91,23 +95,31 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", fullName='" + fullName + '\'' +
-                ", birthDay=" + birthDay +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", status=" + status +
-                ", role=" + role +
-                '}';
+        return String.format("%d,%s,%d,%s,%s,%s,%s",
+                id, fullName,
+                status.getValue(),role.getValue(),
+                DateUtils.dateToString(birthDay),
+                phoneNumber, address);
     }
 
     public static void  transferFields(User oldUser, User newUser){
     oldUser.id = newUser.id;
+    oldUser.status = newUser.status;
     oldUser.fullName = newUser.fullName;
-    oldUser.address = newUser.address;
     oldUser.birthDay = newUser.birthDay;
     oldUser.phoneNumber = newUser.phoneNumber;
-    oldUser.status = newUser.status;
+    oldUser.address = newUser.address;
+
     }
+    public User(String raw) {
+        String[] fields = raw.split(",");
+        id = Long.parseLong(fields[0]);
+        fullName = fields[1];
+        status = UserStatus.fromValue(Integer.parseInt(fields[2]));
+        role = Role.fromValue(fields[3]);
+        birthDay = DateUtils.stringToDate(fields[4]);
+        phoneNumber = fields[5];
+        address = fields[6];
+    }
+
 }

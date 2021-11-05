@@ -1,35 +1,45 @@
 package repository;
 
+import exception.ProductException;
 import model.Drink;
-import model.User;
 
+import utils.CsvUtils;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DrinkRepository implements IDrinkRepository {
-    private List<Drink> drinkList;
+    private final String DRINK_PATH = "data\\drinks.csv";
 
-    public DrinkRepository(){
-        drinkList = new ArrayList<>();
-        drinkList.add(new Drink(1,"Tra dao",25,20000));
-        drinkList.add(new Drink(2,"Tra bi dao",29,15000));
-        drinkList.add(new Drink(3,"Tra chanh",32,20000));
-        drinkList.add(new Drink(4,"Sua chua da",35,15000));
-        drinkList.add(new Drink(5,"Nuoc chanh",18,20000));
-        drinkList.add(new Drink(6,"Cam ep",30,20000));
+    public DrinkRepository() {
     }
+
     @Override
     public Drink getById(long id) {
+        List<Drink> drinkList = getDrink();
         for (Drink drink : drinkList) {
             if (drink.getId() == id)
                 return drink;
         }
         return null;
+
+
     }
 
     @Override
     public List<Drink> getDrink() {
-        return drinkList;
+       List<Drink> newDrinkList = new ArrayList<>();
+       try {
+           List<String> records = CsvUtils.read(DRINK_PATH);
+           for(String record : records) {
+               newDrinkList.add(new Drink(record));
+           }
+           return newDrinkList;
+       } catch (IOException ex) {
+           throw new ProductException("Drink error");
+       }
+
     }
 
     @Override
@@ -38,15 +48,28 @@ public class DrinkRepository implements IDrinkRepository {
     }
 
     @Override
-    public void add(Drink newDrink) {
+    public void add(Drink newDrink) throws IOException {
+        List<Drink> drinkList = getDrink();
         drinkList.add(newDrink);
+        CsvUtils.write(DRINK_PATH, drinkList);
+
 
     }
 
     @Override
     public void update(Drink drink) {
         Drink oldDrink = getById(drink.getId());
-        Drink.transferFields(oldDrink, drink);
-
+        Drink.transferFields(oldDrink , drink);
     }
+
+//    public static void main(String[] args) {
+//        DrinkRepository drinkRepository = new DrinkRepository();
+//        try {
+//            drinkRepository.add(new Drink(2,"Trà đào", 30, 20000));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        List<Drink> list = drinkRepository.getDrink();
+//        System.out.println(list);
+//    }
 }

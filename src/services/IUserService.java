@@ -5,7 +5,7 @@ import model.User;
 import java.util.List;
 
 public interface IUserService {
-    User getById(int id) throws Exception;
+    User getById(long id) throws Exception;
 
     List<User> getUsers() throws Exception;
 

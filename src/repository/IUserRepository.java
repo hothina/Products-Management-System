@@ -2,6 +2,7 @@ package repository;
 
 import model.User;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IUserRepository {
@@ -11,7 +12,7 @@ public interface IUserRepository {
 
     boolean exist (long id);
 
-    void add(User newUser);
+    void add(User newUser) throws IOException;
 
     void update(User user);
 }
