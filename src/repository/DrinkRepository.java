@@ -16,7 +16,7 @@ public class DrinkRepository implements IDrinkRepository {
     }
 
     @Override
-    public Drink getById(long id) {
+    public Drink getById(int id) {
         List<Drink> drinkList = getDrink();
         for (Drink drink : drinkList) {
             if (drink.getId() == id)
@@ -43,7 +43,7 @@ public class DrinkRepository implements IDrinkRepository {
     }
 
     @Override
-    public boolean exist(long id) {
+    public boolean exist(int id) {
         return getById(id) != null;
     }
 
@@ -57,19 +57,16 @@ public class DrinkRepository implements IDrinkRepository {
     }
 
     @Override
-    public void update(Drink drink) {
-        Drink oldDrink = getById(drink.getId());
-        Drink.transferFields(oldDrink , drink);
+    public void update(Drink drink) throws IOException {
+        List<Drink> drinkList = getDrink();
+        for (Drink dr :drinkList){
+            if (dr.getName().equalsIgnoreCase(drink.getName())){
+                Drink.transferFields(dr, drink);
+            }
+        }
+        CsvUtils.write(DRINK_PATH,drinkList);
+
     }
 
-//    public static void main(String[] args) {
-//        DrinkRepository drinkRepository = new DrinkRepository();
-//        try {
-//            drinkRepository.add(new Drink(2,"Trà đào", 30, 20000));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        List<Drink> list = drinkRepository.getDrink();
-//        System.out.println(list);
-//    }
+
 }

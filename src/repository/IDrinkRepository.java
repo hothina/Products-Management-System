@@ -8,12 +8,12 @@ import java.util.List;
 
 public interface IDrinkRepository {
 
-    Drink getById(long id);
+    Drink getById(int id);
     List<Drink> getDrink();
 
-    boolean exist (long id);
+    boolean exist (int id);
 
     void add(Drink newDrink) throws IOException;
 
-    void update(Drink drink);
+    void update(Drink drink) throws IOException;
 }

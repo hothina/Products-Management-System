@@ -14,5 +14,5 @@ public interface IUserRepository {
 
     void add(User newUser) throws IOException;
 
-    void update(User user);
+    void update(User user) throws IOException;
 }

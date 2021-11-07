@@ -45,7 +45,9 @@ public class UserRepository implements IUserRepository{
 
     @Override
     public boolean exist(long id) {
-        return getById(id) != null;
+        if (this.getById(id) != null)
+            return  true;
+        else    return  false;
     }
 
     @Override
@@ -57,23 +59,17 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
-    public void update(User user) {
-        User oldUser = getById(user.getId());
-        User.transferFields(oldUser, user);
-    }
+    public void update(User user) throws IOException {
+        List<User> userList = getUsers();
 
-    public static void main(String[] args) {
-        UserRepository userRepository = new UserRepository();
-        try {
-            userRepository.add(new User(1, "Nguyen Van",
-                    UserStatus.AVAILABLE, Role.ADMIN, DateUtils.stringToDate("10-10-2090 00:00:00"),
-                    "0123456789", "Hue"));
-//            userRepository.update(new User(2, "Nguyen Thanh",
-//                    UserStatus.AVAILABLE, Role.USER, DateUtils.StringToDate("1-1-2095 00:00:00"),
-//                    "0909489483", "Hue"));
-        } catch (Exception e) {
-            e.printStackTrace();
+        for ( User u: userList) {
+            if(u.getId()==user.getId())
+            {
+                User.transferFields(u,user);
+            }
         }
-    }
 
+        CsvUtils.write(USER_PATH,userList);
+
+    }
 }

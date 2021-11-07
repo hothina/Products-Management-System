@@ -38,8 +38,9 @@ public class UserServices implements IUserService {
     @Override
     public void updateUser(User user) throws Exception {
         if (userRepository.exist( user.getId()))
-            throw new Exception("user already exists");
-        userRepository.update(user);
+            userRepository.update(user);
+        else
+            throw new Exception("user not already exists");
 
     }
 }

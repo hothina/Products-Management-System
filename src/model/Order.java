@@ -1,13 +1,14 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.TreeMap;
 
-public class Order {
+public class Order implements Serializable {
     private long id;
-    private String fullName;
-    private String address;
-    private String phoneNumber;
+public TreeMap<String ,Integer> treeOrder;
     private Date createdAt;
     private long total;
+    private long totalMoney;
+
 }

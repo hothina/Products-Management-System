@@ -4,11 +4,11 @@ public class Drink {
     private int id;
     private String name;
     private int quantity;
-    private int price;
+    private long price;
 
     public Drink(){}
 
-    public Drink(int id, String name, int quantity, int price) {
+    public Drink(int id, String name, int quantity, long price) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
@@ -20,10 +20,10 @@ public class Drink {
         id = Integer.parseInt(fileds[0]);
         name = fileds[1];
         quantity = Integer.parseInt(fileds[2]);
-        price = Integer.parseInt(fileds[3]);
+        price = Long.parseLong(fileds[3]);
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -47,7 +47,7 @@ public class Drink {
         this.quantity = quantity;
     }
 
-    public double getPrice() {
+    public long getPrice() {
         return price;
     }
 
