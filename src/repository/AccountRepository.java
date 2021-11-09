@@ -64,16 +64,5 @@ public class AccountRepository implements IAccountRepository {
         Account.transferFields(oldAccount, account);
     }
 
-//    public static void main(String[] args) {
-//        AccountRepository accountRepository = new AccountRepository();
-//        try {
-//            accountRepository.add(new Account("Nguyen Van An","123",1));
-//        } catch (IOException e){
-//            e.printStackTrace();
-//        }
-//        List<Account> list = accountRepository.getAccount();
-//        System.out.println(list);
-//
-//    }
 
 }

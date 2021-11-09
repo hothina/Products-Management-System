@@ -10,6 +10,6 @@ public interface IAccountRepository {
     List<Account> getAccount();
     boolean exist(long id);
     void add(Account newAccount) throws IOException;
-    void update(Account account);
+    void update(Account account)throws IOException;
 
 }

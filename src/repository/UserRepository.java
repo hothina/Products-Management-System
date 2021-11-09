@@ -11,13 +11,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepository implements IUserRepository{
+public class UserRepository implements IUserRepository {
 
 
-    private final String USER_PATH ="data\\users.csv";
+    private final String USER_PATH = "data\\users.csv";
 
-    public UserRepository(){
+    public UserRepository() {
     }
+
     @Override
     public User getById(long id) {
         List<User> userList = getUsers();
@@ -40,14 +41,13 @@ public class UserRepository implements IUserRepository{
         } catch (IOException ex) {
             throw new ProductException("getUsers error");
         }
-
     }
 
     @Override
     public boolean exist(long id) {
         if (this.getById(id) != null)
-            return  true;
-        else    return  false;
+            return true;
+        else return false;
     }
 
     @Override
@@ -62,14 +62,13 @@ public class UserRepository implements IUserRepository{
     public void update(User user) throws IOException {
         List<User> userList = getUsers();
 
-        for ( User u: userList) {
-            if(u.getId()==user.getId())
-            {
-                User.transferFields(u,user);
+        for (User u : userList) {
+            if (u.getId() == user.getId()) {
+                User.transferFields(u, user);
             }
         }
 
-        CsvUtils.write(USER_PATH,userList);
+        CsvUtils.write(USER_PATH, userList);
 
     }
 }
