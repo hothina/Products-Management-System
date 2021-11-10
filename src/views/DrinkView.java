@@ -1,7 +1,7 @@
 package views;
 
 import model.Drink;
-import model.User;
+
 import repository.DrinkRepository;
 import services.DrinkServices;
 import services.IDrinkServices;
@@ -26,17 +26,17 @@ public class DrinkView {
 
     public void showDrinks() {
         try {
-            System.out.println("-----------------------  DANH SACH DO UONG  --------------------------");
+            System.out.println("\t\t\t\t\t------------------  DANH SACH DO UONG  ------------------");
 
 
-            System.out.printf("\n%-5s %-25s %-20s %-10s\n", "Id", "Ten do uong", "So luong", "gia");
+            System.out.printf("\t\t\t\t\t%-5s %-20s %-20s %-10s\n", "Id", "Ten do uong", "So luong", "gia");
             List<Drink> drinkList = drinkServices.getDrink();
 
             for (Drink drink : drinkList) {
-                System.out.printf("%-5s %-25s %-10s %s d\n", drink.getId(), drink.getName(), drink.getQuantity(), drink.getPrice());
+                System.out.printf("\t\t\t\t\t%-5s %-20s %-20s %s d\n", drink.getId(), drink.getName(), drink.getQuantity(), drink.getPrice());
             }
 
-            System.out.println("---------------------------------------------------------------------");
+            System.out.println("\t\t\t\t\t--------------------------------------------------------");
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -44,6 +44,8 @@ public class DrinkView {
 
     public void addDrink() {
         try {
+
+
             System.out.print("Id (la mot so): ");
             String ids = scanner.next();
             Integer id = Integer.parseInt(ids);
@@ -146,7 +148,7 @@ public class DrinkView {
 
     public static void main(String[] args) {
         DrinkView a = new DrinkView();
-        a.addDrink();
+        a.showDrinks();
     }
 }
 

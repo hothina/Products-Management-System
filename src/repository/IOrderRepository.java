@@ -9,6 +9,8 @@ public interface IOrderRepository {
    Order getById(long id);
    List<Order> getOrder();
    boolean exist(long id);
+   void add(Order newOrder);
+   void updare(Order order);
 
 
 }

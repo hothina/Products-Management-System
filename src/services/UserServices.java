@@ -1,5 +1,6 @@
 package services;
 
+import exception.ExistException;
 import model.User;
 import repository.IUserRepository;
 import repository.UserRepository;
@@ -15,10 +16,10 @@ public class UserServices implements IUserService {
     }
 
     @Override
-    public User getById(long id) throws Exception {
+    public User getById(long id)  {
         User user = userRepository.getById(id);
         if (user != null)
-            throw new Exception("user already exists");
+            throw new ExistException("user already exists");
         return user;
     }
 

@@ -1,4 +1,4 @@
 package services;
 
-public class OrderServices {
+public class OrderServices implements IOrderServices {
 }

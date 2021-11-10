@@ -32,15 +32,12 @@ public class UserRepository implements IUserRepository {
     @Override
     public List<User> getUsers() {
         List<User> newUserList = new ArrayList<>();
-        try {
-            List<String> records = CsvUtils.read(USER_PATH);
-            for (String record : records) {
-                newUserList.add(new User(record));
-            }
-            return newUserList;
-        } catch (IOException ex) {
-            throw new ProductException("getUsers error");
+        List<String> records = CsvUtils.read(USER_PATH);
+        for (String record : records) {
+            newUserList.add(new User(record));
         }
+        return newUserList;
+
     }
 
     @Override
@@ -51,7 +48,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void add(User newUser) throws IOException {
+    public void add(User newUser) {
         List<User> userList = getUsers();
         userList.add(newUser);
         CsvUtils.write(USER_PATH, userList);
@@ -59,7 +56,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public void update(User user) throws IOException {
+    public void update(User user) {
         List<User> userList = getUsers();
 
         for (User u : userList) {

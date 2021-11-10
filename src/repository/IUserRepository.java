@@ -12,7 +12,7 @@ public interface IUserRepository {
 
     boolean exist (long id);
 
-    void add(User newUser) throws IOException;
+    void add(User newUser);
 
-    void update(User user) throws IOException;
+    void update(User user) ;
 }

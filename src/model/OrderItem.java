@@ -10,7 +10,6 @@ import java.util.Date;
 public class OrderItem implements Serializable {
     private long id;
     private int quantity;
-    private Date createdAt;
     private long price;
     private int drinkId;
     private String drinkName;
@@ -18,13 +17,13 @@ public class OrderItem implements Serializable {
     public OrderItem() {
     }
 
-    public OrderItem(long id, int quantity, Date createdAt, long price, int drinkId, String drinkName) {
+    public OrderItem(long id, int drinkId,String drinkName, long price, int quantity) {
         this.id = id;
-        this.quantity = quantity;
-        this.createdAt = createdAt;
-        this.price = price;
         this.drinkId = drinkId;
         this.drinkName = drinkName;
+        this.price = price;
+        this.quantity = quantity;
+
     }
 
     public long getId() {
@@ -43,13 +42,6 @@ public class OrderItem implements Serializable {
         this.quantity = quantity;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
 
     public long getPrice() {
         return price;
@@ -77,13 +69,12 @@ public class OrderItem implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%d,%d,%s,%d,%d,%d",id,drinkId,drinkName,price,quantity,createdAt);
+        return String.format("%d,%d,%s,%d,%d",id,drinkId,drinkName,price,quantity);
     }
 
     public static void  transferFields(OrderItem oldOrderItem, OrderItem newOrderItem){
         oldOrderItem.id = newOrderItem.id;
         oldOrderItem.quantity = newOrderItem.quantity;
-        oldOrderItem.createdAt = newOrderItem.createdAt;
         oldOrderItem.price = newOrderItem.price;
         oldOrderItem.drinkId = newOrderItem.drinkId;
         oldOrderItem.drinkName = newOrderItem.drinkName;
@@ -95,6 +86,6 @@ public class OrderItem implements Serializable {
         drinkName = fields[2];
         price = Long.parseLong(fields[3]);
         quantity = Integer.parseInt(fields[4]);
-        createdAt = DateUtils.stringToDate(fields[5]);
+
     }
 }

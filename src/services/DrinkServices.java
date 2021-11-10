@@ -1,5 +1,6 @@
 package services;
 
+import exception.NotFoundException;
 import model.Drink;
 
 import repository.DrinkRepository;
@@ -18,11 +19,10 @@ public class DrinkServices implements IDrinkServices {
 
 
     @Override
-    public Drink getByID(int id) throws Exception {
-
+    public Drink getById(int id)  {
         Drink drink = drinkRepository.getById(id);
         if (drink != null)
-            throw new Exception("Drink alredy exists");
+            throw new NotFoundException("Drink alredy exists");
         return drink;
     }
 
@@ -32,20 +32,17 @@ public class DrinkServices implements IDrinkServices {
     }
 
     @Override
-    public void addDrink(Drink newDrink) throws Exception {
+    public void addDrink(Drink newDrink)  {
         if (drinkRepository.exist(newDrink.getId()))
-            throw new Exception("user already exists");
+            throw new IllegalArgumentException("user already exists");
         drinkRepository.add(newDrink);
     }
 
 
     @Override
-    public void updateDrink(Drink drink) throws Exception {
+    public void updateDrink(Drink drink) {
         if (drinkRepository.exist(drink.getId()))
             drinkRepository.update(drink);
-        else
-            throw new Exception("user already exists");
-
 
     }
 }

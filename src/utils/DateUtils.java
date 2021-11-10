@@ -10,7 +10,7 @@ public class DateUtils {
     private static final String DATE_PATTERN = "dd-MM-yyyy";
 
     public static String dateToString(Date date, String pattern) {
-       DateFormat simpleDateFormat =new SimpleDateFormat(pattern == null ? DATE_PATTERN : pattern);
+        DateFormat simpleDateFormat = new SimpleDateFormat(pattern == null ? DATE_PATTERN : pattern);
         simpleDateFormat.setLenient(false);
         return simpleDateFormat.format(date);
     }
@@ -33,6 +33,9 @@ public class DateUtils {
         return stringToDate(dateString, null);
     }
 
+    public static long currentTimeSecond() {
+        return System.currentTimeMillis() / 1000;
+    }
 
 
 }

@@ -1,11 +1,8 @@
 package repository;
 
-import exception.ProductException;
 import model.Drink;
-
 import utils.CsvUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,15 +27,13 @@ public class DrinkRepository implements IDrinkRepository {
     @Override
     public List<Drink> getDrink() {
        List<Drink> newDrinkList = new ArrayList<>();
-       try {
+
            List<String> records = CsvUtils.read(DRINK_PATH);
            for(String record : records) {
                newDrinkList.add(new Drink(record));
            }
            return newDrinkList;
-       } catch (IOException ex) {
-           throw new ProductException("Drink error");
-       }
+
 
     }
 
@@ -48,16 +43,14 @@ public class DrinkRepository implements IDrinkRepository {
     }
 
     @Override
-    public void add(Drink newDrink) throws IOException {
+    public void add(Drink newDrink) {
         List<Drink> drinkList = getDrink();
         drinkList.add(newDrink);
         CsvUtils.write(DRINK_PATH, drinkList);
-
-
     }
 
     @Override
-    public void update(Drink drink) throws IOException {
+    public void update(Drink drink) {
         List<Drink> drinkList = getDrink();
         for (Drink dr :drinkList){
             if (dr.getName().equalsIgnoreCase(drink.getName())){

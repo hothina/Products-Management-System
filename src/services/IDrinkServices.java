@@ -1,20 +1,18 @@
 package services;
 
 import model.Drink;
+
 import java.io.IOException;
 import java.util.List;
 
 public interface IDrinkServices {
+    Drink getById(int id);
 
+    List<Drink> getDrink();
 
-    Drink getByID(int id) throws Exception;
+    void addDrink(Drink newDrink);
 
-    List<Drink> getDrink() throws Exception;
-
-    void addDrink(Drink newDrink) throws Exception;
-
-    void updateDrink(Drink drink) throws Exception;
-
+    void updateDrink(Drink drink);
 
 
 }

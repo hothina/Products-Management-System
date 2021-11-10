@@ -5,8 +5,8 @@ import model.OrderItem;
 import java.util.List;
 
 public interface IOrderItemServices {
-    OrderItem getById(long id) throws Exception;
-    List<OrderItem> getOrderItem() throws Exception;
-    void addOrderItem(OrderItem newOrderItem) throws Exception;
-    void updateOrderItem(OrderItem orderItem) throws Exception;
+    OrderItem getById(long id);
+    List<OrderItem> getOrderItem();
+    void addOrderItem(OrderItem newOrderItem);
+    void updateOrderItem(OrderItem orderItem);
 }

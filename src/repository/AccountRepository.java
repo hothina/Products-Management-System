@@ -1,9 +1,6 @@
 package repository;
 
-import exception.ProductException;
 import model.Account;
-
-import services.AccountServices;
 import utils.CsvUtils;
 
 import java.io.IOException;
@@ -29,15 +26,11 @@ public class AccountRepository implements IAccountRepository {
     @Override
     public List<Account> getAccount() {
         List<Account> newAccountList = new ArrayList<>();
-        try {
             List<String> records = CsvUtils.read(ACCOUNT_PATH);
             for (String record : records) {
                 newAccountList.add(new Account(record));
             }
             return newAccountList;
-        } catch (IOException ex) {
-            throw new ProductException("Account error");
-        }
     }
 
     @Override

@@ -1,5 +1,7 @@
 package model;
 
+import utils.DateUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -98,6 +100,9 @@ public class Order implements Serializable {
         phoneNumber = fileds[2];
         address = fileds[3];
 
-
+         String orderItems = fileds[4];
+        OrderItem orderItem =new OrderItem(orderItems);
+        total = Long.parseLong(fileds[5]);
+        createdAt = DateUtils.stringToDate(fileds[6]);
     }
 }
