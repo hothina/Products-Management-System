@@ -10,7 +10,7 @@ public interface IOrderRepository {
    List<Order> getOrder();
    boolean exist(long id);
    void add(Order newOrder);
-   void updare(Order order);
+   void update(Order order);
 
 
 }

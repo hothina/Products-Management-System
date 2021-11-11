@@ -37,10 +37,10 @@ public class UserView {
 
     public void addUser() {
         try {
-            System.out.print("Id (la mot so):");
+            System.out.print("Id (la mot so): ");
             String ids = scanner.next();
             Integer id = Integer.parseInt(ids);
-            System.out.print("Ho va ten (TranNhi):");
+            System.out.print("Ho va ten (vd: TranNhi): ");
             String fullName = scanner.next();
             if(!isFormatFullName(fullName)){
                 System.out.println("Nhap sai (vd: TranNhi)");
@@ -52,10 +52,10 @@ public class UserView {
                     System.exit(0);
                 }
             }
-            System.out.print("Ngay sinh (31-12-1970):");
+            System.out.print("Ngay sinh (31-12-1970): ");
             String birthDay = scanner.next();
             Date date = DateUtils.stringToDate(birthDay);
-            System.out.print("So dien thoai (0123456789)");
+            System.out.print("So dien thoai (vd 0123456789): ");
             String phoneNumber = scanner.next();
             if (!isPhoneNumber(phoneNumber)){
                 System.out.println("Nhap sai (vd: 0123456789)");
@@ -67,7 +67,7 @@ public class UserView {
                     System.exit(0);
                 }
             }
-            System.out.print("Dia chi (QuangBinh)");
+            System.out.print("Dia chi (vd QuangBinh): ");
             String address = scanner.next();
             if (!isFormatFullName(address)){
                 System.out.println("Nhap sai (vd: QuangBinh)");
@@ -100,7 +100,7 @@ public class UserView {
 
     public static void main(String[] args) {
         UserView a = new UserView();
-        a.updateUser();
+        a.addUser();
     }
 
     public void showUsers() {
@@ -144,7 +144,7 @@ public class UserView {
                             System.exit(0);
                         }
                     }
-                    System.out.print("Ngay sinh (31-12-1970): ");
+                    System.out.print("Ngay sinh (vd 31-12-1970): ");
                     String birthDay = scanner.next();
                     Date date = DateUtils.stringToDate(birthDay);
                     System.out.print("So dien thoai (0123456789): ");

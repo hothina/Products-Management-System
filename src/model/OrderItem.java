@@ -13,16 +13,18 @@ public class OrderItem implements Serializable {
     private long price;
     private int drinkId;
     private String drinkName;
+    private long total ;
 
     public OrderItem() {
     }
 
-    public OrderItem(long id, int drinkId,String drinkName, long price, int quantity) {
+    public OrderItem(long id, int drinkId,String drinkName, long price, int quantity,long total) {
         this.id = id;
         this.drinkId = drinkId;
         this.drinkName = drinkName;
         this.price = price;
         this.quantity = quantity;
+        this.total = total;
 
     }
 
@@ -67,9 +69,17 @@ public class OrderItem implements Serializable {
         this.drinkName = drinkName;
     }
 
+    public long getTotal() {
+        return total;
+    }
+
+    public void setTotal(long total) {
+        this.total = total;
+    }
+
     @Override
     public String toString() {
-        return String.format("%d,%d,%s,%d,%d",id,drinkId,drinkName,price,quantity);
+        return String.format("%d,%d,%s,%d,%d,%d",id,drinkId,drinkName,price,quantity,total);
     }
 
     public static void  transferFields(OrderItem oldOrderItem, OrderItem newOrderItem){
@@ -78,6 +88,7 @@ public class OrderItem implements Serializable {
         oldOrderItem.price = newOrderItem.price;
         oldOrderItem.drinkId = newOrderItem.drinkId;
         oldOrderItem.drinkName = newOrderItem.drinkName;
+        oldOrderItem.total = newOrderItem.total;
     }
     public OrderItem(String raw){
         String[] fields = raw.split(",");
@@ -86,6 +97,7 @@ public class OrderItem implements Serializable {
         drinkName = fields[2];
         price = Long.parseLong(fields[3]);
         quantity = Integer.parseInt(fields[4]);
+        total = Long.parseLong(fields[5]);
 
     }
 }
