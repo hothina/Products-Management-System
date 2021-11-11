@@ -4,13 +4,11 @@ import model.Drink;
 import model.Order;
 import model.OrderItem;
 import services.*;
+import sort.SortOrder;
 import utils.DateUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class OrderView {
@@ -19,6 +17,10 @@ public class OrderView {
     private IOrderItemServices orderItemServices;
     private IOrderServices orderServices;
     private IDrinkServices drinkServices;
+
+
+    MenuView mn = new MenuView();
+
     Scanner scanner = new Scanner(System.in);
 
     public OrderView() {
@@ -36,49 +38,69 @@ public class OrderView {
         return Pattern.compile(NUMBER_PHONE_REGEX).matcher(phoneNumber).matches();
     }
 
-    public void showOrderItems() {
+    public void showOrderList() {
         try {
-            System.out.println("------------------------------- Đặt Hàng -----------------------------------------------");
-            System.out.printf("\n%-5s %-10s %-12s %-12s %-12s \n", "Id", "Id Sp", "Tên Sp ", "Giá", "Số lượng");
-            List<OrderItem> orderItemList = orderItemServices.getOrderItem();
+            System.out.println("\t\t\t------------------------------------------- ORDER lIST -------------------------------------------------------");
+            System.out.printf("\n\t\t\t\t%-10s %-10s %-15s %-10s %s\n", "Id", "Tên KH", "SDT ", "Địa chỉ", "Ngày tạo");
 
-            for (OrderItem orderItem : orderItemList) {
-                System.out.printf("%-5s %-10s %-12s %-12s %-12s \n", orderItem.getId(), orderItem.getDrinkId(),
-                        orderItem.getDrinkName(), orderItem.getPrice(), orderItem.getQuantity());
+            List<Order> orderList = orderServices.getOrder();
+            SortOrder sortOrder = new SortOrder();
+            Collections.sort(orderList, sortOrder);
+            long totalList =0;
+            for (Order order: orderList) {
+                System.out.printf("\n\t\t\t\t%-10d %-10s %-15s %-10s %s ",order.getId(), order.getName(), order.getPhoneNumber(),order.getAddress(),order.getCreatedAt());
+
+                List<OrderItem> orderItemList = new ArrayList<>();
+                List<OrderItem> orderItemListAll = orderItemServices.getOrderItem();
+                long totalItem =0;
+                for (OrderItem odt : orderItemListAll) {
+                    if (odt.getIdOrder() == order.getId()) {
+                        orderItemList.add(odt);
+                        totalItem=totalItem+odt.getTotal();
+
+                    }
+                }
+                System.out.println("\t\t"+totalItem+" d");
+                totalList=totalList+totalItem;
             }
-            System.out.println("----------------------------------------------------------------------------------------");
+
+            System.out.println("\n\n\t\t\t--------------------------------------------------------------------------------        "+totalList+" d");
+            System.out.println("\n\t\t\t-----------------------------------------------------------------------------------------------------------");
         } catch (Exception e) {
             e.getStackTrace();
         }
     }
 
-    public void showOrder() {
+    public void showOrder(long idOrder) {
 
         List<Order> orderList = orderServices.getOrder();
-        System.out.println("Nhap id: ");
-        long ids = scanner.nextInt();
+
         for (Order order : orderList) {
-            if (ids == order.getId()) {
-                System.out.println(order.getName() + " " + order.getAddress() + " " + order.getPhoneNumber() + " " + order.getCreatedAt());
+            if (idOrder == order.getId()) {
+                System.out.println("\t\t\t---------------------------------- HOA DON ---------------------------------");
+                System.out.println("\t\t\t\t\tTen KH: "+order.getName() + "    Dia chi: " + order.getAddress() + "  SDT:" + order.getPhoneNumber() + "\n\t\t\t\t\tNgay tao:  " + order.getCreatedAt());
                 break;
             }
         }
         List<OrderItem> orderItemList = new ArrayList<>();
         List<OrderItem> orderItemListAll = orderItemServices.getOrderItem();
+        long total =0;
         for (OrderItem odt : orderItemListAll) {
-            if (odt.getIdOrder() == ids) {
+            if (odt.getIdOrder() == idOrder) {
                 orderItemList.add(odt);
+                total=total+odt.getTotal();
 
             }
         }
-        long total =0;
+
         for (OrderItem or : orderItemList) {
 
-            System.out.printf("%-5d %-5d %-12s %-10d %-8d %d  d \n", or.getId(), or.getDrinkId(), or.getDrinkName(), or.getQuantity(), or.getPrice(), or.getTotal());
+            System.out.printf("\n\t\t\t\t\t%-5d %-5d %-12s %-10d %-8d %d  d ", or.getId(), or.getDrinkId(), or.getDrinkName(), or.getQuantity(), or.getPrice(), or.getTotal());
 
-            total = total+or.getTotal();
+//            total = total+or.getTotal();
 
-        }System.out.println(total);
+        }System.out.println("\n\n                                                           Tong tien:  "+total +" d");
+        System.out.println("\t\t\t------------------------------------------------------------------------------");
 
 
     }
@@ -195,13 +217,11 @@ public class OrderView {
             System.out.print("Ngay tao:(vd: 10-10-2021): ");
             String createdAt = scanner.next();
             Date date = DateUtils.stringToDate(createdAt);
-            addOrderItem(id);
-            List<OrderItem> orderItemList = orderItemServices.getOrderItem();
-            long start = orderItemList.size();
 
+
+            addOrderItem(id);
 
             int choice;
-
 
             do {
                 System.out.print("Muon dat them: Bam 1\n Da dat du hang: bam 2:  ");
@@ -217,15 +237,20 @@ public class OrderView {
                         break;
                 }
             } while (choice != 2);
+            //            long end = orderItemServices.getOrderItem().size();
 
-            long end = orderItemServices.getOrderItem().size();
-
-            long total = 2;
-
-
-            Order order = new Order(id, name, phoneNumber, address, start, end, total, date);
-
+            Order order = new Order(id, name, phoneNumber, address,date);
             orderServices.addOrder(order);
+            System.out.println(" In hóa đơn: Bấm Y                Quay lại: Bấm N");
+            String s = scanner.next();
+            if (s.equalsIgnoreCase("y")){
+                showOrder(id);
+            } else if (s.equalsIgnoreCase("n")){
+                addOrder();
+
+            } else { mn.showMenu();
+            }
+
         } catch (Exception e) {
             System.out.print("Nhap Y để quay lai : ");
             String s = scanner.next();
@@ -240,6 +265,6 @@ public class OrderView {
 
     public static void main(String[] args) {
         OrderView orderView = new OrderView();
-        orderView.showOrder();
+        orderView.showOrderList();
     }
 }
