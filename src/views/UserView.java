@@ -6,12 +6,10 @@ import model.UserStatus;
 import repository.UserRepository;
 import services.IUserService;
 import services.UserServices;
+import sort.SortUser;
 import utils.DateUtils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class UserView {
@@ -100,22 +98,24 @@ public class UserView {
 
     public static void main(String[] args) {
         UserView a = new UserView();
-        a.addUser();
+        a.showUsers();
     }
 
     public void showUsers() {
         try {
-            System.out.println("--------------------DANH SACH NGUOI DUNG------------------");
+            System.out.println("\t\t\t\t\t\t\t--------------------DANH SACH NGUOI DUNG------------------");
 
 
-            System.out.printf("%-5s %-30s %-30s\n", "Id", "Ho ten", "Sdt");
+            System.out.printf("\t\t\t\t\t\t\t\t%-5s %-30s %-30s\n", "Id", "Ho ten", "Sdt");
             List<User> userList = userService.getUsers();
+            SortUser sortUser = new SortUser();
+            Collections.sort(userList,sortUser);
 
             for (User user : userList) {
-                System.out.printf("%-5s %-30s %-30s\n", user.getId(), user.getFullName(), user.getPhoneNumber());
+                System.out.printf("\t\t\t\t\t\t\t\t%-5s %-30s %-30s\n", user.getId(), user.getFullName(), user.getPhoneNumber());
             }
 
-            System.out.println("---------------------------------------------------------");
+            System.out.println("\t\t\t\t\t\t\t-----------------------------------------------------------");
         } catch (Exception e) {
             e.getStackTrace();
         }

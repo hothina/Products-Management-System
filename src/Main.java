@@ -45,7 +45,6 @@ public class Main {
         } while (!Login);
         if (admin) {
             MenuView menuView = new MenuView();
-//            menuView.showUser1();
             menuView.menu();
         } else {
             System.out.println("Toi la user:");

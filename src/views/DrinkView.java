@@ -5,7 +5,9 @@ import model.Drink;
 import repository.DrinkRepository;
 import services.DrinkServices;
 import services.IDrinkServices;
+import sort.SortDrink;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -26,17 +28,19 @@ public class DrinkView {
 
     public void showDrinks() {
         try {
-            System.out.println("\t\t\t\t\t------------------  DANH SACH DO UONG  ------------------");
+            System.out.println("\t\t\t\t\t--------------------  DANH SACH DO UONG  ------------------------");
 
 
-            System.out.printf("\t\t\t\t\t%-5s %-20s %-20s %-10s\n", "Id", "Ten do uong", "So luong", "gia");
+            System.out.printf("\t\t\t\t\t\t%-5s %-20s %-20s %-10s\n", "Id", "Ten do uong", "So luong", "gia");
             List<Drink> drinkList = drinkServices.getDrink();
+            SortDrink sortDrink = new SortDrink();
+            Collections.sort(drinkList, sortDrink);
 
             for (Drink drink : drinkList) {
-                System.out.printf("\t\t\t\t\t%-5s %-20s %-20s %s d\n", drink.getId(), drink.getName(), drink.getQuantity(), drink.getPrice());
+                System.out.printf("\t\t\t\t\t\t%-5s %-20s %-20s %s d\n", drink.getId(), drink.getName(), drink.getQuantity(), drink.getPrice());
             }
 
-            System.out.println("\t\t\t\t\t--------------------------------------------------------");
+            System.out.println("\t\t\t\t\t----------------------------------------------------------------");
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -119,7 +123,8 @@ public class DrinkView {
                 if (s.equalsIgnoreCase("y")) {
                     updateDrink();
                 } else {
-                    System.exit(0);
+                    MenuView mn = new MenuView();
+                    mn.showDrink1();
                 }
             } else {
                 System.out.println("Khong ton tai do uong");
@@ -128,7 +133,8 @@ public class DrinkView {
                 if (s1.equalsIgnoreCase("y")){
                     updateDrink();
                 } else {
-                    System.exit(0);
+                    MenuView mn = new MenuView();
+                    mn.showDrink1();
                 }
 
             }

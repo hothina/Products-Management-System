@@ -100,34 +100,34 @@ public class MenuView {
     }
 
     public void showUser() {
-        System.out.println("----------------- USER --------------------");
-        System.out.println("|   1. Danh sách người dùng:               |");
-        System.out.println("|   2. Thêm người dùng:                    |");
-        System.out.println("|   3. Sửa thông tin người dùng:           |");
-        System.out.println("|   0. Thóat chương trình:                 |");
-        System.out.println("-------------------------------------------  ");
-        System.out.print("Chọn chức năng: ");
+        System.out.println("\t\t\t\t\t----------------- USER --------------------");
+        System.out.println("\t\t\t\t\t|   1. Danh sách người dùng:               |");
+        System.out.println("\t\t\t\t\t|   2. Thêm người dùng:                    |");
+        System.out.println("\t\t\t\t\t|   3. Sửa thông tin người dùng:           |");
+        System.out.println("\t\t\t\t\t|   0. Thóat chương trình:                 |");
+        System.out.println("\t\t\t\t\t-------------------------------------------  ");
+        System.out.print("\t\t\tChọn chức năng: ");
     }
 
     public void showDrink() {
-        System.out.println("-------------------- Drink ------------------");
-        System.out.println("|   1. Danh sách đồ uống:                    |");
-        System.out.println("|   2. Thêm đồ uống:                         |");
-        System.out.println("|   3. Sửa thông tin đồ uống:                |");
-        System.out.println("|   0. Thoát chương trình:                   |");
-        System.out.println("---------------------------------------------");
-        System.out.print(" Chọn chức năng: ");
+        System.out.println("\t\t\t\t\t-------------------- Drink ------------------");
+        System.out.println("\t\t\t\t\t|   1. Danh sách đồ uống:                    |");
+        System.out.println("\t\t\t\t\t|   2. Thêm đồ uống:                         |");
+        System.out.println("\t\t\t\t\t|   3. Sửa thông tin đồ uống:                |");
+        System.out.println("\t\t\t\t\t|   0. Thoát chương trình:                   |");
+        System.out.println("\t\t\t\t\t---------------------------------------------");
+        System.out.print(" \t\t\tChọn chức năng: ");
     }
 
     public void showMenu() {
-        System.out.println("-------------------- Welcome ------------------");
-        System.out.println("|   1. Quản lý người dùng:                     |");
-        System.out.println("|   2. Quản lý đồ uống:                        |");
-        System.out.println("|   3. Quản lý đặt hàng:                       |");
-        System.out.println("|   4. Quản lý hóa đơn:                        |");
-        System.out.println("|   0. Thoát chương trình:                     |");
-        System.out.println("------------------------------------------------");
-        System.out.print(" Chọn chức năng: ");
+        System.out.println("\t\t\t\t\t-------------------- Welcome ------------------");
+        System.out.println("\t\t\t\t\t|   1. Quản lý người dùng:                     |");
+        System.out.println("\t\t\t\t\t|   2. Quản lý đồ uống:                        |");
+        System.out.println("\t\t\t\t\t|   3. Quản lý đặt hàng:                       |");
+        System.out.println("\t\t\t\t\t|   4. Quản lý hóa đơn:                        |");
+        System.out.println("\t\t\t\t\t|   0. Thoát chương trình:                     |");
+        System.out.println("\t\t\t\t\t------------------------------------------------");
+        System.out.print(" \t\t\tChọn chức năng: ");
     }
 
     public void menu() {

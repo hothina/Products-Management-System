@@ -3,9 +3,10 @@ package model;
 
 import utils.DateUtils;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable{
 
     private long id;
     private String fullName;
