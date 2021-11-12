@@ -3,7 +3,7 @@ package views;
 import java.util.Scanner;
 
 public class MenuView {
-    private final UserView userView = new UserView();
+    private final UserView userView = new UserView(this);
     private final DrinkView drinkView = new DrinkView();
     private final OrderView orderView = new OrderView();
 
@@ -190,9 +190,11 @@ public class MenuView {
                         break;
                     case 2:
                         showDrink1();
+
                         break;
                     case 3:
                         sowOrder1();
+
                     case 0:
                         System.exit(0);
                         break;

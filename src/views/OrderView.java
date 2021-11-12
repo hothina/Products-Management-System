@@ -6,19 +6,18 @@ import model.OrderItem;
 import services.*;
 import sort.SortOrder;
 import utils.DateUtils;
-
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class OrderView {
-    public static final String NAME_REGEX = "^([A-Z]+[a-z]{1,6}){1,6}";
+    public static final String NAME_REGEX = "^([A-Z]+[a-z]*[ ]?)+$";
     public static final String NUMBER_PHONE_REGEX = "^[0][1-9][0-9]{8,9}$";
     private IOrderItemServices orderItemServices;
     private IOrderServices orderServices;
     private IDrinkServices drinkServices;
 
     Scanner scanner = new Scanner(System.in);
+    static Scanner input = new Scanner(System.in);
 
     public OrderView() {
         orderItemServices = new OrderItemServices();
@@ -150,6 +149,8 @@ public class OrderView {
         }
     }
 
+
+
     private void nextAdd(long idOrder) {
         System.out.print("  Nhap Y để tiep tuc: ");
         String s1 = scanner.next();
@@ -160,16 +161,19 @@ public class OrderView {
         }
     }
 
+
+
     public void addOrder() {
         DrinkView drinkView = new DrinkView();
         drinkView.showDrinks();
+
         try {
             long id = DateUtils.currentTimeSecond();
-            System.out.print("Ho va ten(vd: TranNhi): ");
+            System.out.print("Ho va ten(vd: Tran Nhi): ");
 
-            String name = scanner.next();
+            String name = input.nextLine();
             if (!isFormatName(name)) {
-                System.out.println("Nhap sai (vd TranNhi)");
+                System.out.println("Nhap sai (vd Tran Nhi)");
                 nextAdd1();
             }
             System.out.print("So dien thoai:(vd: 0909429345): ");
@@ -178,10 +182,10 @@ public class OrderView {
                 System.out.println("Nhap sai (vd: 0123456789)");
                nextAdd1();
             }
-            System.out.print("Dia chi:(vd: QuangBinh): ");
-            String address = scanner.next();
+            System.out.print("Dia chi:(vd: Quang Binh): ");
+            String address = input.nextLine();
             if (!isFormatName(address)) {
-                System.out.println("Nhap sai (vd: QuangBinh)");
+                System.out.println("Nhap sai (vd: Quang Binh)");
                nextAdd1();
             }
             System.out.print("Ngay tao:(vd: 10-10-2021): ");
@@ -190,12 +194,14 @@ public class OrderView {
 
 
             addOrderItem(id);
-
             int choice;
 
+
             do {
-                System.out.print("Muon dat them: Bam 1\n Da dat du hang: bam 2:  ");
-                choice = scanner.nextInt();
+                System.out.print("Muon dat them: Bam 1\nDa dat du hang: bam 2:  ");
+                String ch = scanner.next();
+
+                choice = Integer.parseInt(ch);
                 switch (choice) {
                     case 1:
                         System.out.print("Muon dat them: ");
@@ -238,7 +244,7 @@ public class OrderView {
 
     public static void main(String[] args) {
         OrderView orderView = new OrderView();
-        orderView.showOrderList();
         orderView.addOrder();
+        orderView.showOrderList();
     }
 }

@@ -22,16 +22,14 @@ public class Main {
 
         UserRepository userRepository = new UserRepository();
 
-        DrinkRepository drinkRepository = new DrinkRepository();
-        List<Drink> list = drinkRepository.getDrink();
 
         do {
             Scanner sc = new Scanner(System.in);
             System.out.println("Đăng nhập hệ thống");
             System.out.print("Username:");
-            String Username = sc.nextLine();
+            String Username = sc.next();
             System.out.print("Password:");
-            String Password = sc.nextLine();
+            String Password = sc.next();
             for (Account s : Accounts) {
                 if (Username.equalsIgnoreCase(s.getName()) && Password.equals(s.getPassword())) {
                     Login = true;

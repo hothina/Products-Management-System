@@ -4,7 +4,7 @@ import utils.DateUtils;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+
 
 
 public class Order implements Serializable {
@@ -24,9 +24,6 @@ public class Order implements Serializable {
         this.createdAt = createdAt;
 
     }
-
-
-
 
 
     public long getId() {

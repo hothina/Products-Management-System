@@ -16,13 +16,16 @@ public class UserView {
 
     private IUserService userService;
     private Scanner scanner;
-    public static final String NAME_REGEX = "^([A-Z]+[a-z]{1,6}){1,6}";
+    private MenuView me;
+    public static final String NAME_REGEX = "^([A-Z]+[a-z]*[ ]?)+$";
     public static final String NUMBER_PHONE_REGEX = "^[0][1-9][0-9]{8,9}$";
+   static Scanner input = new Scanner(System.in);
 
 
-    public UserView() {
+    public UserView(MenuView m) {
         scanner = new Scanner(System.in);
         userService = new UserServices();
+        me=m;
     }
 
     public boolean isFormatFullName(String fullName) {
@@ -37,9 +40,9 @@ public class UserView {
         try {
             System.out.print("Id (la mot so): ");
             String ids = scanner.next();
-            Integer id = Integer.parseInt(ids);
-            System.out.print("Ho va ten (vd: TranNhi): ");
-            String fullName = scanner.next();
+            int id = Integer.parseInt(ids);
+            System.out.print("Ho va ten (vd: Tran Nhi): ");
+            String fullName = input.nextLine();
             if(!isFormatFullName(fullName)){
                 System.out.println("Nhap sai (vd: TranNhi)");
                 nextAdd();
@@ -53,8 +56,8 @@ public class UserView {
                 System.out.println("Nhap sai (vd: 0123456789)");
                nextAdd();
             }
-            System.out.print("Dia chi (vd QuangBinh): ");
-            String address = scanner.next();
+            System.out.print("Dia chi (vd Quang Binh): ");
+            String address = input.nextLine();
             if (!isFormatFullName(address)){
                 System.out.println("Nhap sai (vd: QuangBinh)");
                nextAdd();
@@ -67,25 +70,29 @@ public class UserView {
 
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
             nextAdd();
         }
 
     }
 
     private void nextAdd() {
-        System.out.println("Nhap Y để quay lai: ");
+        System.out.println("Tiếp tục:  Nhập Y         Trở về: Nhập N");
         String s = scanner.next();
         if (s.equalsIgnoreCase("y")) {
             addUser();
-        } else {
-            System.exit(0);
+        } else if (s.equalsIgnoreCase("n")){
+
+           me.menu();
+
         }
     }
 
 //    public static void main(String[] args) {
 //        UserView a = new UserView();
 //        a.showUsers();
+//        a.updateUser();
+//        a.addUser();
 //    }
 
     public void showUsers() {
@@ -116,11 +123,12 @@ public class UserView {
             System.out.print("Id (la mot so): ");
             boolean check = false;
             String ids = scanner.next();
-            Long id = Long.parseLong(ids);
+            long id = Long.parseLong(ids);
             for (User user : Users) {
                 if (user.getId() == id) {
-                    System.out.print("Ho va ten (TranNhi): ");
-                    String fullName = scanner.next();
+                    System.out.print("Ho va ten (Tran Nhi): ");
+
+                    String fullName = input.nextLine();
                     if(!isFormatFullName(fullName)){
                         System.out.println("Nhap sai (vd: TranNhi)");
                         nextUpdate();
@@ -134,10 +142,10 @@ public class UserView {
                         System.out.println("Nhap sai (vd: 0123456789)");
                         nextUpdate();
                     }
-                    System.out.print("Dia chi (QuangBinh): ");
-                    String address = scanner.next();
+                    System.out.print("Dia chi (Quang Binh): ");
+                    String address = input.nextLine();
                     if (!isFormatFullName(address)){
-                        System.out.println("Nhap sai (vd: QuangBinh)");
+                        System.out.println("Nhap sai (vd: Quang Binh)");
                         nextUpdate();
 
                     }
@@ -157,18 +165,18 @@ public class UserView {
                 System.out.println("Đã cập nhật người dùng ");
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
             nextUpdate();
         }
     }
 
     private void nextUpdate() {
-        System.out.println("Nhap Y để quay lai: ");
+        System.out.println("Tiếp tục:  Nhập Y         Trở về: Nhập N ");
         String s = scanner.next();
         if (s.equalsIgnoreCase("y")) {
             updateUser();
-        } else {
-            System.exit(0);
+        } else if (s.equalsIgnoreCase("n")){
+            me.menu();
         }
     }
 

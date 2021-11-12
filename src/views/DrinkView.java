@@ -13,8 +13,9 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class DrinkView {
-    public static final String DRINK_REGEX = "^([A-Z]+[a-z]{1,6}){1,6}";
+    public static final String DRINK_REGEX = "^([A-Z]+[a-z]*[ ]?)+$";
     private IDrinkServices drinkServices;
+    Scanner input = new Scanner(System.in);
 
     Scanner scanner;
 
@@ -49,24 +50,22 @@ public class DrinkView {
 
     public void addDrink() {
         try {
-
-
             System.out.print("Id (la mot so): ");
             String ids = scanner.next();
-            Integer id = Integer.parseInt(ids);
-            System.out.print("Ten do uong (TraXanh): ");
-            String name = scanner.next();
+            int id = Integer.parseInt(ids);
+            System.out.print("Ten do uong (Tra Xanh): ");
+            String name = input.nextLine();
             if (!isDrinkFormat(name)) {
-                System.out.println("Nhap sai (vd: TranNhi)");
+                System.out.println("Nhap sai (vd: Tra Xanh)");
                nextAddDrink();
 
             }
             System.out.print("So luong: ");
             String quantitys = scanner.next();
-            Integer quantity = Integer.parseInt(quantitys);
+            int quantity = Integer.parseInt(quantitys);
             System.out.print("Gia: ");
             String prices = scanner.next();
-            Long price = Long.parseLong(prices);
+            long price = Long.parseLong(prices);
 
             Drink drink = new Drink(id, name, quantity, price);
             drinkServices.addDrink(drink);
@@ -92,7 +91,7 @@ public class DrinkView {
             DrinkRepository drinkRepository = new DrinkRepository();
             List<Drink> Drinks = drinkRepository.getDrink();
             System.out.print("Ten do uong (TraXanh): ");
-            String name = scanner.next();
+            String name = input.nextLine();
 
             boolean check = false;
             for (Drink drink : Drinks) {
@@ -102,11 +101,11 @@ public class DrinkView {
                     System.out.print("So luong: ");
 
                     String quantitys = scanner.next();
-                    Integer quantity = Integer.parseInt(quantitys);
+                    int quantity = Integer.parseInt(quantitys);
                     System.out.println(quantity);
                     System.out.print("Gia: ");
                     String prices = scanner.next();
-                    Long price = Long.parseLong(prices);
+                    long price = Long.parseLong(prices);
                     System.out.println(price);
                     Drink drink1 = new Drink(drink.getId(), name, quantity, price);
 
@@ -142,10 +141,12 @@ public class DrinkView {
     }
 
 
-//    public static void main(String[] args) {
-//        DrinkView a = new DrinkView();
-//        a.showDrinks();
-//    }
+    public static void main(String[] args) {
+        DrinkView a = new DrinkView();
+        a.showDrinks();
+        a.updateDrink();
+        a.addDrink();
+    }
 }
 
 
