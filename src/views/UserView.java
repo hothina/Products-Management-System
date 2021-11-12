@@ -42,13 +42,7 @@ public class UserView {
             String fullName = scanner.next();
             if(!isFormatFullName(fullName)){
                 System.out.println("Nhap sai (vd: TranNhi)");
-                System.out.println("Nhap Y để quay lai: ");
-                String s = scanner.next();
-                if (s.equalsIgnoreCase("y")){
-                    addUser();
-                } else {
-                    System.exit(0);
-                }
+                nextAdd();
             }
             System.out.print("Ngay sinh (31-12-1970): ");
             String birthDay = scanner.next();
@@ -57,65 +51,58 @@ public class UserView {
             String phoneNumber = scanner.next();
             if (!isPhoneNumber(phoneNumber)){
                 System.out.println("Nhap sai (vd: 0123456789)");
-                System.out.println("Nhap Y để quay lai: ");
-                String s = scanner.next();
-                if (s.equalsIgnoreCase("y")){
-                    addUser();
-                } else {
-                    System.exit(0);
-                }
+               nextAdd();
             }
             System.out.print("Dia chi (vd QuangBinh): ");
             String address = scanner.next();
             if (!isFormatFullName(address)){
                 System.out.println("Nhap sai (vd: QuangBinh)");
-                System.out.println("Nhap Y để quay lai: ");
-                String s = scanner.next();
-                if (s.equalsIgnoreCase("y")){
-                    addUser();
-                } else {
-                    System.exit(0);
-                }
+               nextAdd();
             }
             User user = new User(id, fullName, date, phoneNumber, address);
             user.setRole(Role.USER);
             user.setStatus(UserStatus.AVAILABLE);
             userService.addUser(user);
+            System.out.println("Đã thêm người dùng.");
 
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("Nhap Y để quay lai: ");
-            String s = scanner.next();
-            if (s.equalsIgnoreCase("y")){
-                addUser();
-            } else {
-                System.exit(0);
-            }
+            nextAdd();
         }
 
     }
 
-    public static void main(String[] args) {
-        UserView a = new UserView();
-        a.showUsers();
+    private void nextAdd() {
+        System.out.println("Nhap Y để quay lai: ");
+        String s = scanner.next();
+        if (s.equalsIgnoreCase("y")) {
+            addUser();
+        } else {
+            System.exit(0);
+        }
     }
+
+//    public static void main(String[] args) {
+//        UserView a = new UserView();
+//        a.showUsers();
+//    }
 
     public void showUsers() {
         try {
-            System.out.println("\t\t\t\t\t\t\t--------------------DANH SACH NGUOI DUNG------------------");
+            System.out.println("\t\t--------------------DANH SACH NGUOI DUNG------------------");
 
 
-            System.out.printf("\t\t\t\t\t\t\t\t%-5s %-30s %-30s\n", "Id", "Ho ten", "Sdt");
+            System.out.printf("\t\t\t%-5s %-30s %-30s\n", "Id", "Ho ten", "Sdt");
             List<User> userList = userService.getUsers();
             SortUser sortUser = new SortUser();
             Collections.sort(userList,sortUser);
 
             for (User user : userList) {
-                System.out.printf("\t\t\t\t\t\t\t\t%-5s %-30s %-30s\n", user.getId(), user.getFullName(), user.getPhoneNumber());
+                System.out.printf("\t\t\t%-5s %-30s %-30s\n", user.getId(), user.getFullName(), user.getPhoneNumber());
             }
 
-            System.out.println("\t\t\t\t\t\t\t-----------------------------------------------------------");
+            System.out.println("\t\t-----------------------------------------------------------");
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -136,13 +123,7 @@ public class UserView {
                     String fullName = scanner.next();
                     if(!isFormatFullName(fullName)){
                         System.out.println("Nhap sai (vd: TranNhi)");
-                        System.out.println("Nhap Y để quay lai: ");
-                        String s = scanner.next();
-                        if (s.equalsIgnoreCase("y")){
-                            updateUser();
-                        }else {
-                            System.exit(0);
-                        }
+                        nextUpdate();
                     }
                     System.out.print("Ngay sinh (vd 31-12-1970): ");
                     String birthDay = scanner.next();
@@ -151,25 +132,13 @@ public class UserView {
                     String phoneNumber = scanner.next();
                     if (!isPhoneNumber(phoneNumber)){
                         System.out.println("Nhap sai (vd: 0123456789)");
-                        System.out.println("Nhap Y để quay lai: ");
-                        String s = scanner.next();
-                        if (s.equalsIgnoreCase("y")){
-                            updateUser();
-                        }else {
-                            System.exit(0);
-                        }
+                        nextUpdate();
                     }
                     System.out.print("Dia chi (QuangBinh): ");
                     String address = scanner.next();
                     if (!isFormatFullName(address)){
                         System.out.println("Nhap sai (vd: QuangBinh)");
-                        System.out.println("Nhap Y để quay lai: ");
-                        String s = scanner.next();
-                        if (s.equalsIgnoreCase("y")){
-                            updateUser();
-                        }else {
-                            System.exit(0);
-                        }
+                        nextUpdate();
 
                     }
                     User user1 = new User(id, fullName, date, phoneNumber, address);
@@ -180,33 +149,26 @@ public class UserView {
                 }
             }
             if (!check) {
+
                 System.out.println("khong ton tai!!");
-                System.out.println("Nhap Y để quay lai: ");
-                String s = scanner.next();
-                if (s.equalsIgnoreCase("y")){
-                    updateUser();
-                }else {
-                    System.exit(0);
-                }
+                nextUpdate();
             } else {
+
                 System.out.println("Đã cập nhật người dùng ");
-                System.out.println("Nhap Y để quay lai: ");
-                String s = scanner.next();
-                if (s.equalsIgnoreCase("y")){
-                    updateUser();
-                }else {
-                    System.exit(0);
-                }
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("Nhap Y để quay lai: ");
-            String s = scanner.next();
-            if (s.equalsIgnoreCase("y")){
-                updateUser();
-            }else {
-                System.exit(0);
-            }
+            nextUpdate();
+        }
+    }
+
+    private void nextUpdate() {
+        System.out.println("Nhap Y để quay lai: ");
+        String s = scanner.next();
+        if (s.equalsIgnoreCase("y")) {
+            updateUser();
+        } else {
+            System.exit(0);
         }
     }
 

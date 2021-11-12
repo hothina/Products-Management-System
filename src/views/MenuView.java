@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class MenuView {
     private final UserView userView = new UserView();
     private final DrinkView drinkView = new DrinkView();
+    private final OrderView orderView = new OrderView();
+
     Scanner scanner = new Scanner(System.in);
 
     public void showDrink1() {
@@ -79,7 +81,7 @@ public class MenuView {
                 System.out.print(" Bạn muốn tiếp tục: nhấn Y\n Trở về: Nhấn N  ");
                 String character = scanner.next();
                 if (character.equalsIgnoreCase("y")) {
-                    showUser1();
+                    showUser();
                 } else if (character.equalsIgnoreCase("n")) {
                     menu();
                 } else {
@@ -92,7 +94,45 @@ public class MenuView {
             System.out.print("Nhấn Y để tiếp tục: ");
             String s = scanner.next();
             if (s.equalsIgnoreCase("y")){
-                showDrink1();
+                showUser1();
+            } else {
+                menu();
+            }
+        }
+    }
+
+    public void sowOrder1(){
+        try {
+            int choice =0;
+            showOrders();
+            do {
+                String sr = scanner.next();
+                choice = Integer.parseInt(sr);
+                switch (choice) {
+                    case 1:
+                        orderView.showOrderList();
+                        break;
+                    case 2:
+                        orderView.addOrder();
+                        break;
+                    case 0:
+                        System.exit(0);
+                } System.out.print(" Bạn muốn tiếp tục: nhấn Y\n Trở về: nhấn N  ");
+                String character = scanner.next();
+                if (character.equalsIgnoreCase("y")) {
+                    showOrders();
+                } else if (character.equalsIgnoreCase("n")) {
+                    menu();
+                } else {
+                    System.exit(0);
+                }
+            } while (choice != 0);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.print("Nhấn Y để tiếp tục: ");
+            String s = scanner.next();
+            if (s.equalsIgnoreCase("y")){
+               sowOrder1();
             } else {
                 menu();
             }
@@ -123,10 +163,17 @@ public class MenuView {
         System.out.println("\t\t\t\t\t-------------------- Welcome ------------------");
         System.out.println("\t\t\t\t\t|   1. Quản lý người dùng:                     |");
         System.out.println("\t\t\t\t\t|   2. Quản lý đồ uống:                        |");
-        System.out.println("\t\t\t\t\t|   3. Quản lý đặt hàng:                       |");
-        System.out.println("\t\t\t\t\t|   4. Quản lý hóa đơn:                        |");
+        System.out.println("\t\t\t\t\t|   3. Quản lý hóa đơn đặt hàng:               |");
         System.out.println("\t\t\t\t\t|   0. Thoát chương trình:                     |");
         System.out.println("\t\t\t\t\t------------------------------------------------");
+        System.out.print(" \t\t\tChọn chức năng: ");
+    }
+    public void showOrders() {
+        System.out.println("\t\t\t\t\t-------------------- ORDER ------------------");
+        System.out.println("\t\t\t\t\t|   1. Danh sách hóa đơn:                     |");
+        System.out.println("\t\t\t\t\t|   2. Thêm hóa đơn đặt hàng:                 |");
+        System.out.println("\t\t\t\t\t|   0. Thoát chương trình:                    |");
+        System.out.println("\t\t\t\t\t-----------------------------------------------");
         System.out.print(" \t\t\tChọn chức năng: ");
     }
 
@@ -144,6 +191,8 @@ public class MenuView {
                     case 2:
                         showDrink1();
                         break;
+                    case 3:
+                        sowOrder1();
                     case 0:
                         System.exit(0);
                         break;
@@ -166,5 +215,10 @@ public class MenuView {
                 System.exit(0);
             }
         }
+    }
+
+    public static void main(String[] args) {
+        MenuView a = new MenuView();
+        a.sowOrder1();
     }
 }

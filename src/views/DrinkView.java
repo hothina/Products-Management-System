@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 public class DrinkView {
     public static final String DRINK_REGEX = "^([A-Z]+[a-z]{1,6}){1,6}";
     private IDrinkServices drinkServices;
+
     Scanner scanner;
 
     public DrinkView() {
@@ -57,13 +58,7 @@ public class DrinkView {
             String name = scanner.next();
             if (!isDrinkFormat(name)) {
                 System.out.println("Nhap sai (vd: TranNhi)");
-                System.out.println("Nhap Y để quay lai: ");
-                String s = scanner.next();
-                if (s.equalsIgnoreCase("y")) {
-                    addDrink();
-                } else {
-                    System.exit(0);
-                }
+               nextAddDrink();
 
             }
             System.out.print("So luong: ");
@@ -77,14 +72,18 @@ public class DrinkView {
             drinkServices.addDrink(drink);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("Nhap Y để quay lai: ");
-            String s = scanner.next();
-            if (s.equalsIgnoreCase("y")) {
-                addDrink();
-            } else {
-                System.exit(0);
-            }
+            nextAddDrink();
 
+        }
+    }
+
+    private void nextAddDrink() {
+        System.out.println("Nhap Y để quay lai: ");
+        String s = scanner.next();
+        if (s.equalsIgnoreCase("y")) {
+            addDrink();
+        } else {
+            System.exit(0);
         }
     }
 
@@ -118,44 +117,35 @@ public class DrinkView {
             }
             if (check) {
                 System.out.println("Da cap nhat do uong!!");
-                System.out.print("  Nhap Y để tiep tuc: ");
-                String s = scanner.next();
-                if (s.equalsIgnoreCase("y")) {
-                    updateDrink();
-                } else {
-                    MenuView mn = new MenuView();
-                    mn.showDrink1();
-                }
+
             } else {
                 System.out.println("Khong ton tai do uong");
-                System.out.print("  Nhap Y để tiep tuc: ");
-                String s1 = scanner.next();
-                if (s1.equalsIgnoreCase("y")){
-                    updateDrink();
-                } else {
-                    MenuView mn = new MenuView();
-                    mn.showDrink1();
-                }
+                nextUpdate();
 
             }
 
         } catch (Exception e) {
+            e.getStackTrace();
 
-            System.out.print("Nhap Y để quay lai : ");
-            String s = scanner.next();
-            if (s.equalsIgnoreCase("y")){
-                updateDrink();
-            } else {
-                System.exit(0);
-            }
-
+           nextUpdate();
         }
     }
 
-    public static void main(String[] args) {
-        DrinkView a = new DrinkView();
-        a.showDrinks();
+    private void nextUpdate() {
+        System.out.print("Nhập Y để tiếp tục : ");
+        String s = scanner.next();
+        if (s.equalsIgnoreCase("y")){
+            updateDrink();
+        } else {
+            System.exit(0);
+        }
     }
+
+
+//    public static void main(String[] args) {
+//        DrinkView a = new DrinkView();
+//        a.showDrinks();
+//    }
 }
 
 

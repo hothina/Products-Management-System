@@ -18,9 +18,6 @@ public class OrderView {
     private IOrderServices orderServices;
     private IDrinkServices drinkServices;
 
-
-    MenuView mn = new MenuView();
-
     Scanner scanner = new Scanner(System.in);
 
     public OrderView() {
@@ -46,25 +43,25 @@ public class OrderView {
             List<Order> orderList = orderServices.getOrder();
             SortOrder sortOrder = new SortOrder();
             Collections.sort(orderList, sortOrder);
-            long totalList =0;
-            for (Order order: orderList) {
-                System.out.printf("\n\t\t\t\t%-10d %-10s %-15s %-10s %s ",order.getId(), order.getName(), order.getPhoneNumber(),order.getAddress(),order.getCreatedAt());
+            long totalList = 0;
+            for (Order order : orderList) {
+                System.out.printf("\n\t\t\t\t%-10d %-10s %-15s %-10s %s ", order.getId(), order.getName(), order.getPhoneNumber(), order.getAddress(), order.getCreatedAt());
 
                 List<OrderItem> orderItemList = new ArrayList<>();
                 List<OrderItem> orderItemListAll = orderItemServices.getOrderItem();
-                long totalItem =0;
+                long totalItem = 0;
                 for (OrderItem odt : orderItemListAll) {
                     if (odt.getIdOrder() == order.getId()) {
                         orderItemList.add(odt);
-                        totalItem=totalItem+odt.getTotal();
+                        totalItem = totalItem + odt.getTotal();
 
                     }
                 }
-                System.out.println("\t\t"+totalItem+" d");
-                totalList=totalList+totalItem;
+                System.out.println("\t\t" + totalItem + " d");
+                totalList = totalList + totalItem;
             }
 
-            System.out.println("\n\n\t\t\t--------------------------------------------------------------------------------        "+totalList+" d");
+            System.out.println("\n\n\t\t\t--------------------------------------------------------------------------------        " + totalList + " d");
             System.out.println("\n\t\t\t-----------------------------------------------------------------------------------------------------------");
         } catch (Exception e) {
             e.getStackTrace();
@@ -78,17 +75,17 @@ public class OrderView {
         for (Order order : orderList) {
             if (idOrder == order.getId()) {
                 System.out.println("\t\t\t---------------------------------- HOA DON ---------------------------------");
-                System.out.println("\t\t\t\t\tTen KH: "+order.getName() + "    Dia chi: " + order.getAddress() + "  SDT:" + order.getPhoneNumber() + "\n\t\t\t\t\tNgay tao:  " + order.getCreatedAt());
+                System.out.println("\t\t\t\t\tTen KH: " + order.getName() + "    Dia chi: " + order.getAddress() + "  SDT:" + order.getPhoneNumber() + "\n\t\t\t\t\tNgay tao:  " + order.getCreatedAt());
                 break;
             }
         }
         List<OrderItem> orderItemList = new ArrayList<>();
         List<OrderItem> orderItemListAll = orderItemServices.getOrderItem();
-        long total =0;
+        long total = 0;
         for (OrderItem odt : orderItemListAll) {
             if (odt.getIdOrder() == idOrder) {
                 orderItemList.add(odt);
-                total=total+odt.getTotal();
+                total = total + odt.getTotal();
 
             }
         }
@@ -97,9 +94,9 @@ public class OrderView {
 
             System.out.printf("\n\t\t\t\t\t%-5d %-5d %-12s %-10d %-8d %d  d ", or.getId(), or.getDrinkId(), or.getDrinkName(), or.getQuantity(), or.getPrice(), or.getTotal());
 
-//            total = total+or.getTotal();
 
-        }System.out.println("\n\n                                                           Tong tien:  "+total +" d");
+        }
+        System.out.println("\n\n                                                           Tong tien:  " + total + " d");
         System.out.println("\t\t\t------------------------------------------------------------------------------");
 
 
@@ -109,7 +106,6 @@ public class OrderView {
     public void addOrderItem(long idOrder) {
 
         try {
-
 
             System.out.print(" Id Drink (la mot so): ");
             int idD = scanner.nextInt();
@@ -121,7 +117,7 @@ public class OrderView {
                     long price = drink.getPrice();
                     String name = drink.getName();
 
-                    System.out.println("Soluong: ");
+                    System.out.print("Soluong: ");
                     int quantity = scanner.nextInt();
                     if (quantity <= drink.getQuantity()) {
 
@@ -129,13 +125,7 @@ public class OrderView {
                         drinkServices.updateDrink(drink);
                     } else {
                         System.out.println("Qua so luong hien co");
-                        System.out.print("  Nhap Y để tiep tuc: ");
-                        String s = scanner.next();
-                        if (s.equalsIgnoreCase("y")) {
-                            addOrderItem(idOrder);
-                        } else {
-                            System.exit(0);
-                        }
+                        nextAdd(idOrder);
                     }
 
                     long total = quantity * drink.getPrice();
@@ -152,23 +142,21 @@ public class OrderView {
 
             } else {
                 System.out.println("Khong ton tai do uong");
-                System.out.print("  Nhap Y để tiep tuc: ");
-                String s1 = scanner.next();
-                if (s1.equalsIgnoreCase("y")) {
-                    addOrderItem(idOrder);
-                } else {
-                    System.exit(0);
-                }
+                nextAdd(idOrder);
 
             }
         } catch (Exception e) {
-            System.out.print("Nhap Y để quay lai : ");
-            String s = scanner.next();
-            if (s.equalsIgnoreCase("y")) {
-                addOrderItem(idOrder);
-            } else {
-                System.exit(0);
-            }
+           nextAdd(idOrder);
+        }
+    }
+
+    private void nextAdd(long idOrder) {
+        System.out.print("  Nhap Y để tiep tuc: ");
+        String s1 = scanner.next();
+        if (s1.equalsIgnoreCase("y")) {
+            addOrderItem(idOrder);
+        } else {
+            System.exit(0);
         }
     }
 
@@ -182,37 +170,19 @@ public class OrderView {
             String name = scanner.next();
             if (!isFormatName(name)) {
                 System.out.println("Nhap sai (vd TranNhi)");
-                System.out.println("Nhap Y để quay lai: ");
-                String s = scanner.next();
-                if (s.equalsIgnoreCase("y")) {
-                    addOrder();
-                } else {
-                    System.exit(0);
-                }
+                nextAdd1();
             }
             System.out.print("So dien thoai:(vd: 0909429345): ");
             String phoneNumber = scanner.next();
             if (!isPhoneNumber(phoneNumber)) {
                 System.out.println("Nhap sai (vd: 0123456789)");
-                System.out.println("Nhap Y để quay lai: ");
-                String s = scanner.next();
-                if (s.equalsIgnoreCase("y")) {
-                    addOrder();
-                } else {
-                    System.exit(0);
-                }
+               nextAdd1();
             }
             System.out.print("Dia chi:(vd: QuangBinh): ");
             String address = scanner.next();
             if (!isFormatName(address)) {
                 System.out.println("Nhap sai (vd: QuangBinh)");
-                System.out.println("Nhap Y để quay lai: ");
-                String s = scanner.next();
-                if (s.equalsIgnoreCase("y")) {
-                    addOrder();
-                } else {
-                    System.exit(0);
-                }
+               nextAdd1();
             }
             System.out.print("Ngay tao:(vd: 10-10-2021): ");
             String createdAt = scanner.next();
@@ -239,26 +209,29 @@ public class OrderView {
             } while (choice != 2);
             //            long end = orderItemServices.getOrderItem().size();
 
-            Order order = new Order(id, name, phoneNumber, address,date);
+            Order order = new Order(id, name, phoneNumber, address, date);
             orderServices.addOrder(order);
             System.out.println(" In hóa đơn: Bấm Y                Quay lại: Bấm N");
             String s = scanner.next();
-            if (s.equalsIgnoreCase("y")){
-                showOrder(id);
-            } else if (s.equalsIgnoreCase("n")){
-                addOrder();
-
-            } else { mn.showMenu();
-            }
-
-        } catch (Exception e) {
-            System.out.print("Nhap Y để quay lai : ");
-            String s = scanner.next();
             if (s.equalsIgnoreCase("y")) {
-                addOrder();
+                showOrder(id);
             } else {
                 System.exit(0);
             }
+
+        } catch (Exception e) {
+            e.getStackTrace();
+            nextAdd1();
+        }
+    }
+
+    private void nextAdd1() {
+        System.out.print("Nhap Y để quay lai : ");
+        String s = scanner.next();
+        if (s.equalsIgnoreCase("y")) {
+            addOrder();
+        } else {
+            System.exit(0);
         }
     }
 
@@ -266,5 +239,6 @@ public class OrderView {
     public static void main(String[] args) {
         OrderView orderView = new OrderView();
         orderView.showOrderList();
+        orderView.addOrder();
     }
 }
