@@ -38,69 +38,75 @@ public class UserView {
 
     public void addUser() {
         try {
-            System.out.print("Id (la mot so): ");
+
+            System.out.print("Id (la so): ");
             String ids = scanner.next();
             int id = Integer.parseInt(ids);
-            System.out.print("Ho va ten (vd: Tran Nhi): ");
+            System.out.print("Họ tên (vd: Tran Nhi): ");
             String fullName = input.nextLine();
             if(!isFormatFullName(fullName)){
-                System.out.println("Nhap sai (vd: TranNhi)");
+                System.out.println("Nhập sai (vd: TranNhi)");
                 nextAdd();
+            } else {
+                System.out.print("Ngày sinh (31-12-1970): ");
+                String birthDay = scanner.next();
+                Date date = DateUtils.stringToDate(birthDay);
+                System.out.print("Số điện thoại (vd 0123456789): ");
+                String phoneNumber = scanner.next();
+                if (!isPhoneNumber(phoneNumber)) {
+                    System.out.println("Nhập sai (vd: 0123456789)");
+                    nextAdd();
+                }
+                else {
+                    System.out.print("Địa chỉ (vd Quang Binh): ");
+                    String address = input.nextLine();
+                    if (!isFormatFullName(address)) {
+                        System.out.println("Nhập sai (vd: QuangBinh)");
+                        nextAdd();
+                    }
+                        else {
+                    User user = new User(id, fullName, date, phoneNumber, address);
+                    user.setRole(Role.USER);
+                    user.setStatus(UserStatus.AVAILABLE);
+                    userService.addUser(user);
+                    System.out.println("Đã thêm người dùng.");}
+                }
             }
-            System.out.print("Ngay sinh (31-12-1970): ");
-            String birthDay = scanner.next();
-            Date date = DateUtils.stringToDate(birthDay);
-            System.out.print("So dien thoai (vd 0123456789): ");
-            String phoneNumber = scanner.next();
-            if (!isPhoneNumber(phoneNumber)){
-                System.out.println("Nhap sai (vd: 0123456789)");
-               nextAdd();
-            }
-            System.out.print("Dia chi (vd Quang Binh): ");
-            String address = input.nextLine();
-            if (!isFormatFullName(address)){
-                System.out.println("Nhap sai (vd: QuangBinh)");
-               nextAdd();
-            }
-            User user = new User(id, fullName, date, phoneNumber, address);
-            user.setRole(Role.USER);
-            user.setStatus(UserStatus.AVAILABLE);
-            userService.addUser(user);
-            System.out.println("Đã thêm người dùng.");
-
 
         } catch (Exception e) {
-//            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
             nextAdd();
         }
 
     }
 
     private void nextAdd() {
-        System.out.println("Tiếp tục:  Nhập Y         Trở về: Nhập N");
+        System.out.println("Tiếp tục thêm người dùng:  Nhập Y         Trở về: Nhập N");
         String s = scanner.next();
         if (s.equalsIgnoreCase("y")) {
             addUser();
         } else if (s.equalsIgnoreCase("n")){
 
-           me.menu();
+           me.showUser1(true);
 
+        } else {
+            me.menu(true);
         }
     }
 
 //    public static void main(String[] args) {
-//        UserView a = new UserView();
-//        a.showUsers();
-//        a.updateUser();
+//        MenuView m=new MenuView();
+//        UserView a = new UserView(m);
+//
 //        a.addUser();
 //    }
 
     public void showUsers() {
         try {
-            System.out.println("\t\t--------------------DANH SACH NGUOI DUNG------------------");
+            System.out.println("\t\t-------------------- DANH SÁCH NGƯỜI DÙNG ------------------");
 
 
-            System.out.printf("\t\t\t%-5s %-30s %-30s\n", "Id", "Ho ten", "Sdt");
+            System.out.printf("\t\t\t%-5s %-30s %-30s\n\n", "Id", "Họ tên", "Sdt");
             List<User> userList = userService.getUsers();
             SortUser sortUser = new SortUser();
             Collections.sort(userList,sortUser);
@@ -109,7 +115,7 @@ public class UserView {
                 System.out.printf("\t\t\t%-5s %-30s %-30s\n", user.getId(), user.getFullName(), user.getPhoneNumber());
             }
 
-            System.out.println("\t\t-----------------------------------------------------------");
+            System.out.println("\n\t\t-----------------------------------------------------------  ");
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -120,63 +126,70 @@ public class UserView {
         try {
             UserRepository userRepository = new UserRepository();
             List<User> Users = userRepository.getUsers();
-            System.out.print("Id (la mot so): ");
+            System.out.print("Id (là số): ");
             boolean check = false;
+            boolean check1 = false;
             String ids = scanner.next();
             long id = Long.parseLong(ids);
             for (User user : Users) {
                 if (user.getId() == id) {
-                    System.out.print("Ho va ten (Tran Nhi): ");
-
-                    String fullName = input.nextLine();
-                    if(!isFormatFullName(fullName)){
-                        System.out.println("Nhap sai (vd: TranNhi)");
-                        nextUpdate();
-                    }
-                    System.out.print("Ngay sinh (vd 31-12-1970): ");
-                    String birthDay = scanner.next();
-                    Date date = DateUtils.stringToDate(birthDay);
-                    System.out.print("So dien thoai (0123456789): ");
-                    String phoneNumber = scanner.next();
-                    if (!isPhoneNumber(phoneNumber)){
-                        System.out.println("Nhap sai (vd: 0123456789)");
-                        nextUpdate();
-                    }
-                    System.out.print("Dia chi (Quang Binh): ");
-                    String address = input.nextLine();
-                    if (!isFormatFullName(address)){
-                        System.out.println("Nhap sai (vd: Quang Binh)");
-                        nextUpdate();
-
-                    }
-                    User user1 = new User(id, fullName, date, phoneNumber, address);
-                    user1.setRole(Role.USER);
-                    user1.setStatus(UserStatus.AVAILABLE);
-                    userService.updateUser(user1);
                     check = true;
+                    System.out.print("Tên (Tran Nhi): ");
+
+                    String fullName =  input.nextLine();
+                    if(!isFormatFullName(fullName)){
+                        System.out.println("Nhập sai (vd: TranNhi)");
+                        nextUpdate();
+                    }else {
+                        System.out.print("Ngày sinh (vd 31-12-1970): ");
+                        String birthDay = scanner.next();
+                        Date date = DateUtils.stringToDate(birthDay);
+                        System.out.print("Số điện thoại (0123456789): ");
+                        String phoneNumber = scanner.next();
+                        if (!isPhoneNumber(phoneNumber)) {
+                            System.out.println("Nhập sai (vd: 0123456789)");
+                            nextUpdate();
+                        } else {
+                            System.out.print("Địa chỉ (Quang Binh): ");
+                            String address = input.nextLine();
+                            if (!isFormatFullName(address)) {
+                                System.out.println("Nhập sai (vd: Quang Binh)");
+                                nextUpdate();
+
+                            } else {
+                                User user1 = new User(id, fullName, date, phoneNumber, address);
+                                user1.setRole(Role.USER);
+                                user1.setStatus(UserStatus.AVAILABLE);
+                                userService.updateUser(user1);
+                                check1=true;
+                            }
+                        }
+                    }
                 }
             }
             if (!check) {
 
-                System.out.println("khong ton tai!!");
+                System.out.println("Không tồn tại người dùng");
                 nextUpdate();
-            } else {
+            } else if(check1) {
 
                 System.out.println("Đã cập nhật người dùng ");
             }
         } catch (Exception e) {
-//            System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
             nextUpdate();
         }
     }
 
     private void nextUpdate() {
-        System.out.println("Tiếp tục:  Nhập Y         Trở về: Nhập N ");
+        System.out.println("Tiếp tục cập nhật người dùng:  Nhập Y         Trở về: Nhập N ");
         String s = scanner.next();
         if (s.equalsIgnoreCase("y")) {
             updateUser();
         } else if (s.equalsIgnoreCase("n")){
-            me.menu();
+            me.showUser1(true);
+        } else {
+            me.menu(true);
         }
     }
 

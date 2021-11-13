@@ -15,13 +15,15 @@ import java.util.regex.Pattern;
 public class DrinkView {
     public static final String DRINK_REGEX = "^([A-Z]+[a-z]*[ ]?)+$";
     private IDrinkServices drinkServices;
+    private MenuView me;
     Scanner input = new Scanner(System.in);
 
     Scanner scanner;
 
-    public DrinkView() {
+    public DrinkView(MenuView m) {
         scanner = new Scanner(System.in);
         drinkServices = new DrinkServices();
+        me = m;
     }
 
     public boolean isDrinkFormat(String name) {
@@ -30,10 +32,10 @@ public class DrinkView {
 
     public void showDrinks() {
         try {
-            System.out.println("\t\t\t\t\t--------------------  DANH SACH DO UONG  ------------------------");
+            System.out.println("\t\t\t\t\t--------------------  DANH SÁCH ĐỒ UỐNG  ------------------------");
 
 
-            System.out.printf("\t\t\t\t\t\t%-5s %-20s %-20s %-10s\n", "Id", "Ten do uong", "So luong", "gia");
+            System.out.printf("\t\t\t\t\t\t%-5s %-20s %-20s %-10s\n", "Id", "Tên đồ uống", "Số lượng", "giá");
             List<Drink> drinkList = drinkServices.getDrink();
             SortDrink sortDrink = new SortDrink();
             Collections.sort(drinkList, sortDrink);
@@ -50,25 +52,26 @@ public class DrinkView {
 
     public void addDrink() {
         try {
-            System.out.print("Id (la mot so): ");
+            System.out.print("Id (là số): ");
             String ids = scanner.next();
             int id = Integer.parseInt(ids);
-            System.out.print("Ten do uong (Tra Xanh): ");
+            System.out.print("Tên đồ uống (vd Tra Xanh): ");
             String name = input.nextLine();
             if (!isDrinkFormat(name)) {
-                System.out.println("Nhap sai (vd: Tra Xanh)");
+                System.out.println("Nhập sai (vd: Tra Xanh)");
                nextAddDrink();
 
-            }
-            System.out.print("So luong: ");
-            String quantitys = scanner.next();
-            int quantity = Integer.parseInt(quantitys);
-            System.out.print("Gia: ");
-            String prices = scanner.next();
-            long price = Long.parseLong(prices);
+            }else {
+                System.out.print("Số lượng: ");
+                String quantitys = scanner.next();
+                int quantity = Integer.parseInt(quantitys);
+                System.out.print("Giá: ");
+                String prices = scanner.next();
+                long price = Long.parseLong(prices);
 
-            Drink drink = new Drink(id, name, quantity, price);
-            drinkServices.addDrink(drink);
+                Drink drink = new Drink(id, name, quantity, price);
+                drinkServices.addDrink(drink);
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             nextAddDrink();
@@ -77,12 +80,15 @@ public class DrinkView {
     }
 
     private void nextAddDrink() {
-        System.out.println("Nhap Y để quay lai: ");
+
+        System.out.println("Tiếp tục thêm đồ uống : Nhập Y            Trở về: Nhập N  ");
         String s = scanner.next();
         if (s.equalsIgnoreCase("y")) {
             addDrink();
-        } else {
-            System.exit(0);
+        } else if (s.equalsIgnoreCase("n")){
+            me.showDrink1(true);
+        }else {
+            me.menu(true);
         }
     }
 
@@ -90,7 +96,7 @@ public class DrinkView {
         try {
             DrinkRepository drinkRepository = new DrinkRepository();
             List<Drink> Drinks = drinkRepository.getDrink();
-            System.out.print("Ten do uong (TraXanh): ");
+            System.out.print("Tên đồ uống ( vd Tra Xanh): ");
             String name = input.nextLine();
 
             boolean check = false;
@@ -98,15 +104,15 @@ public class DrinkView {
                 if (name.equalsIgnoreCase(drink.getName())) {
                     System.out.println(drink.getName());
 
-                    System.out.print("So luong: ");
+                    System.out.print("Số lượng: ");
 
                     String quantitys = scanner.next();
                     int quantity = Integer.parseInt(quantitys);
-                    System.out.println(quantity);
-                    System.out.print("Gia: ");
+                    System.out.print(quantity);
+                    System.out.print("Giá: ");
                     String prices = scanner.next();
                     long price = Long.parseLong(prices);
-                    System.out.println(price);
+                    System.out.print(price);
                     Drink drink1 = new Drink(drink.getId(), name, quantity, price);
 
                     drinkServices.updateDrink(drink1);
@@ -115,10 +121,10 @@ public class DrinkView {
                 }
             }
             if (check) {
-                System.out.println("Da cap nhat do uong!!");
+                System.out.println("Đã cập nhật đồ uống");
 
             } else {
-                System.out.println("Khong ton tai do uong");
+                System.out.println("Không tồn tại đồ uống ");
                 nextUpdate();
 
             }
@@ -131,21 +137,15 @@ public class DrinkView {
     }
 
     private void nextUpdate() {
-        System.out.print("Nhập Y để tiếp tục : ");
+        System.out.print("Tiếp tục cập nhật đồ uống: Nhập Y        Trở về: Nhập N ");
         String s = scanner.next();
         if (s.equalsIgnoreCase("y")){
             updateDrink();
+        } else if (s.equalsIgnoreCase("n")){
+            me.showDrink1(true);
         } else {
-            System.exit(0);
+            me.menu(true);
         }
-    }
-
-
-    public static void main(String[] args) {
-        DrinkView a = new DrinkView();
-        a.showDrinks();
-        a.updateDrink();
-        a.addDrink();
     }
 }
 

@@ -5,6 +5,7 @@ import repository.UserRepository;
 import utils.CsvUtils;
 import utils.DateUtils;
 import views.MenuView;
+import views.OrderView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,9 +44,11 @@ public class Main {
         } while (!Login);
         if (admin) {
             MenuView menuView = new MenuView();
-            menuView.menu();
+            menuView.menu(true);
         } else {
-            System.out.println("Toi la user:");
+
+            MenuView menuView = new MenuView();
+            menuView.menuUser(false);
         }
 
     }

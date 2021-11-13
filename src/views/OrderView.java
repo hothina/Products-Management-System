@@ -15,14 +15,16 @@ public class OrderView {
     private IOrderItemServices orderItemServices;
     private IOrderServices orderServices;
     private IDrinkServices drinkServices;
+    private MenuView me;
 
     Scanner scanner = new Scanner(System.in);
     static Scanner input = new Scanner(System.in);
 
-    public OrderView() {
+    public OrderView(MenuView m) {
         orderItemServices = new OrderItemServices();
         drinkServices = new DrinkServices();
         orderServices = new OrderServices();
+        me=m;
     }
 
     public boolean isFormatName(String fullName) {
@@ -60,7 +62,7 @@ public class OrderView {
                 totalList = totalList + totalItem;
             }
 
-            System.out.println("\n\n\t\t\t--------------------------------------------------------------------------------        " + totalList + " d");
+            System.out.println("\n\n\t\t\t                                                                          "+"TỔNG  " + totalList + " d");
             System.out.println("\n\t\t\t-----------------------------------------------------------------------------------------------------------");
         } catch (Exception e) {
             e.getStackTrace();
@@ -73,8 +75,8 @@ public class OrderView {
 
         for (Order order : orderList) {
             if (idOrder == order.getId()) {
-                System.out.println("\t\t\t---------------------------------- HOA DON ---------------------------------");
-                System.out.println("\t\t\t\t\tTen KH: " + order.getName() + "    Dia chi: " + order.getAddress() + "  SDT:" + order.getPhoneNumber() + "\n\t\t\t\t\tNgay tao:  " + order.getCreatedAt());
+                System.out.println("\t\t\t---------------------------------- HÓA ĐƠN ---------------------------------");
+                System.out.println("\t\t\t\t\tTên KH: " + order.getName() + "       Địa chỉ: " + order.getAddress() + "        SDT:" + order.getPhoneNumber() + "\n\t\t\t\t\tNgày tạo:  " + order.getCreatedAt());
                 break;
             }
         }
@@ -95,7 +97,7 @@ public class OrderView {
 
 
         }
-        System.out.println("\n\n                                                           Tong tien:  " + total + " d");
+        System.out.println("\n\n                                                           Tổng tiền:  " + total + " d");
         System.out.println("\t\t\t------------------------------------------------------------------------------");
 
 
@@ -106,41 +108,44 @@ public class OrderView {
 
         try {
 
-            System.out.print(" Id Drink (la mot so): ");
+            System.out.print(" Id Drink : ");
             int idD = scanner.nextInt();
             List<Drink> drinkList = drinkServices.getDrink();
-            boolean check = false;
+            boolean check1 = false;
+            boolean check2 = false;
             for (Drink drink : drinkList) {
                 if (idD == drink.getId()) {
                     int drinkId = drink.getId();
                     long price = drink.getPrice();
                     String name = drink.getName();
 
-                    System.out.print("Soluong: ");
+                    System.out.print("Số lượng: ");
                     int quantity = scanner.nextInt();
                     if (quantity <= drink.getQuantity()) {
 
                         drink.setQuantity(drink.getQuantity() - quantity);
                         drinkServices.updateDrink(drink);
+
+                        long total = quantity * drink.getPrice();
+
+                        OrderItem orderItem = new OrderItem(DateUtils.currentTimeSecond(), drinkId, name, price, quantity, total, idOrder);
+                        orderItemServices.addOrderItem(orderItem);
+
+                        check1 = true;
                     } else {
-                        System.out.println("Qua so luong hien co");
+                        System.out.println("Quá số lượng hiện có");
                         nextAdd(idOrder);
+                        check2 = true;
                     }
 
-                    long total = quantity * drink.getPrice();
-
-                    OrderItem orderItem = new OrderItem(DateUtils.currentTimeSecond(), drinkId, name, price, quantity, total, idOrder);
-                    orderItemServices.addOrderItem(orderItem);
-
-                    check = true;
                 }
             }
-            if (check) {
+            if (check1) {
 
-                System.out.println("Da dat hang!!");
+                System.out.println("Đã đặt hàng ");
 
-            } else {
-                System.out.println("Khong ton tai do uong");
+            } else if(!check2){
+                System.out.println("Không tồn tại đồ uống");
                 nextAdd(idOrder);
 
             }
@@ -152,99 +157,115 @@ public class OrderView {
 
 
     private void nextAdd(long idOrder) {
-        System.out.print("  Nhap Y để tiep tuc: ");
+        System.out.print("  Tiếp tục đặt hàng: Nhập Y                Quay lai: Nhập N");
         String s1 = scanner.next();
         if (s1.equalsIgnoreCase("y")) {
             addOrderItem(idOrder);
+        } else if (s1.equalsIgnoreCase("n")){
+            me.sowOrder1(true);
         } else {
-            System.exit(0);
+            me.menu(true);
         }
     }
 
 
 
-    public void addOrder() {
-        DrinkView drinkView = new DrinkView();
+    public void addOrder(boolean admin) {
+        DrinkView drinkView = new DrinkView(me);
         drinkView.showDrinks();
 
         try {
             long id = DateUtils.currentTimeSecond();
-            System.out.print("Ho va ten(vd: Tran Nhi): ");
+            System.out.print("Tên (vd: Tran Nhi): ");
 
             String name = input.nextLine();
             if (!isFormatName(name)) {
-                System.out.println("Nhap sai (vd Tran Nhi)");
-                nextAdd1();
-            }
-            System.out.print("So dien thoai:(vd: 0909429345): ");
-            String phoneNumber = scanner.next();
-            if (!isPhoneNumber(phoneNumber)) {
-                System.out.println("Nhap sai (vd: 0123456789)");
-               nextAdd1();
-            }
-            System.out.print("Dia chi:(vd: Quang Binh): ");
-            String address = input.nextLine();
-            if (!isFormatName(address)) {
-                System.out.println("Nhap sai (vd: Quang Binh)");
-               nextAdd1();
-            }
-            System.out.print("Ngay tao:(vd: 10-10-2021): ");
-            String createdAt = scanner.next();
-            Date date = DateUtils.stringToDate(createdAt);
-
-
-            addOrderItem(id);
-            int choice;
-
-
-            do {
-                System.out.print("Muon dat them: Bam 1\nDa dat du hang: bam 2:  ");
-                String ch = scanner.next();
-
-                choice = Integer.parseInt(ch);
-                switch (choice) {
-                    case 1:
-                        System.out.print("Muon dat them: ");
-                        addOrderItem(id);
-                        break;
-                    case 2:
-                        System.out.println("Da dat du hang");
-                    default:
-                        break;
+                System.out.println("Nhập sai (vd Tran Nhi)");
+                nextAdd1(admin);
+            }else {
+                System.out.print("Số điện thoại (vd: 0909429345): ");
+                String phoneNumber = scanner.next();
+                if (!isPhoneNumber(phoneNumber)) {
+                    System.out.println("Nhập sai (vd: 0123456789)");
+                    nextAdd1(admin);
                 }
-            } while (choice != 2);
-            //            long end = orderItemServices.getOrderItem().size();
+                else {
+                    System.out.print("Địa chỉ (vd: Quang Binh): ");
+                    String address = input.nextLine();
+                    if (!isFormatName(address)) {
+                        System.out.println("Nhập sai (vd: Quang Binh)");
+                        nextAdd1(admin);
+                    } else {
+                        System.out.print("Ngày tạo:(vd: 10-10-2021): ");
+                        String createdAt = scanner.next();
+                        Date date = DateUtils.stringToDate(createdAt);
 
-            Order order = new Order(id, name, phoneNumber, address, date);
-            orderServices.addOrder(order);
-            System.out.println(" In hóa đơn: Bấm Y                Quay lại: Bấm N");
-            String s = scanner.next();
-            if (s.equalsIgnoreCase("y")) {
-                showOrder(id);
-            } else {
-                System.exit(0);
+
+                        addOrderItem(id);
+                        int choice;
+
+
+                        do {
+                            System.out.print("Muốn đặt thêm: Nhập 1          Không đặt thêm: Nhập 2  ");
+                            String ch = scanner.next();
+
+                            choice = Integer.parseInt(ch);
+                            switch (choice) {
+                                case 1:
+                                    System.out.print("Muốn đặt thêm ");
+                                    addOrderItem(id);
+                                    break;
+                                case 2:
+                                    System.out.println("Đã đặt đủ hàng");
+                                default:
+                                    break;
+                            }
+                        } while (choice != 2);
+
+                        Order order = new Order(id, name, phoneNumber, address, date);
+                        orderServices.addOrder(order);
+                        System.out.println(" In hóa đơn: Nhập Y      ");
+                        String s = scanner.next();
+                        if (s.equalsIgnoreCase("y")) {
+                            showOrder(id);
+                        } else {
+                            if(admin){
+                                me.menu(admin);}
+                            else{
+                                me.menuUser(admin);
+                            }
+                        }
+                    }
+                }
             }
 
         } catch (Exception e) {
             e.getStackTrace();
-            nextAdd1();
+            nextAdd1(admin);
         }
     }
 
-    private void nextAdd1() {
-        System.out.print("Nhap Y để quay lai : ");
+
+
+
+    private void nextAdd1(boolean admin) {
+        System.out.print("Tiếp tục thêm hóa đơn : Nhập Y    ");
         String s = scanner.next();
         if (s.equalsIgnoreCase("y")) {
-            addOrder();
+            addOrder(admin);
         } else {
-            System.exit(0);
+            if(admin)
+                me.menu(admin);
+            else
+                me.menuUser(admin);
         }
     }
 
 
-    public static void main(String[] args) {
-        OrderView orderView = new OrderView();
-        orderView.addOrder();
-        orderView.showOrderList();
-    }
+
+//    public static void main(String[] args) {
+//        OrderView orderView = new OrderView();
+//        orderView.addOrder();
+//        orderView.showOrderList();
+//    }
 }
