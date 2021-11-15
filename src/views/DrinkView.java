@@ -71,6 +71,7 @@ public class DrinkView {
 
                 Drink drink = new Drink(id, name, quantity, price);
                 drinkServices.addDrink(drink);
+                System.out.println("Đã thêm đồ uống");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -108,11 +109,11 @@ public class DrinkView {
 
                     String quantitys = scanner.next();
                     int quantity = Integer.parseInt(quantitys);
-                    System.out.print(quantity);
+//                    System.out.print(quantity);
                     System.out.print("Giá: ");
                     String prices = scanner.next();
                     long price = Long.parseLong(prices);
-                    System.out.print(price);
+//                    System.out.print(price);
                     Drink drink1 = new Drink(drink.getId(), name, quantity, price);
 
                     drinkServices.updateDrink(drink1);

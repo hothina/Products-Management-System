@@ -121,7 +121,7 @@ public class OrderView {
 
                     System.out.print("Số lượng: ");
                     int quantity = scanner.nextInt();
-                    if (quantity <= drink.getQuantity()) {
+                    if (quantity>0 && quantity <= drink.getQuantity()) {
 
                         drink.setQuantity(drink.getQuantity() - quantity);
                         drinkServices.updateDrink(drink);
@@ -133,7 +133,7 @@ public class OrderView {
 
                         check1 = true;
                     } else {
-                        System.out.println("Quá số lượng hiện có");
+                        System.out.println("Số lượng không đúng ");
                         nextAdd(idOrder);
                         check2 = true;
                     }
